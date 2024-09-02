@@ -117,7 +117,7 @@ def logout():
     return redirect(url_for('auth.home'))
 
 # Initialize Hugging Face pipeline
-generator = pipeline('text-generation', model='EleutherAI/gpt-neo-1.3B')
+generator = pipeline('text-generation', model='openai-community/gpt2')
 
 def get_quiz():
     try:
