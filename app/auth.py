@@ -123,22 +123,23 @@ def get_quiz():
     try:
         # Generate quiz text using the Hugging Face model
         response = generator(
-            "Generate a quiz with 5 questions about financial literacy. Provide questions and multiple-choice options in a format like: Q: Question? A: Option 1 B: Option 2 C: Option 3 D: Option 4",
-            max_length=150,
-            num_return_sequences=1
+            "Generate a quiz with 5 questions. The quiz aims to improve 18 to 24 year old's financial literacy. Each question should be followed by four multiple-choice options. Give in this format --> Q: <question goes here>? A: <Option 1 goes here> B: <Option 2 goes here> C: <Option 3 goes here> D: <Option 4 goes here>",
+            max_length=10000,
+            num_return_sequences=1,
+            truncation=True
         )
         quiz_text = response[0]['generated_text'].strip()
+        print("Generated Quiz Text:", quiz_text)  # Debugging line
         # Parse the quiz data
-        return parse_quiz_data(quiz_text)
+        quiz_data = parse_quiz_data(quiz_text)
+        print("Parsed Quiz Data:", quiz_data)  # Debugging line
+        return quiz_data
     except Exception as e:
         print(f"Error fetching quiz data: {e}")
         return []
 
 def parse_quiz_data(quiz_text):
-    # Split the quiz text into lines
     lines = quiz_text.split('\n')
-
-    # Initialize a list to hold the quiz questions
     quiz = []
     current_question = None
 
@@ -146,29 +147,13 @@ def parse_quiz_data(quiz_text):
         line = line.strip()
         if line:
             if line.startswith('Q:'):
-                # If there's a current question, add it to the quiz list
                 if current_question:
                     quiz.append(current_question)
-                # Start a new question
                 current_question = {'question': line[2:].strip(), 'options': []}
-            elif line.startswith('A:'):
-                # Add an option
-                if current_question:
-                    current_question['options'].append(line[2:].strip())
-            elif line.startswith('B:'):
-                # Add an option
-                if current_question:
-                    current_question['options'].append(line[2:].strip())
-            elif line.startswith('C:'):
-                # Add an option
-                if current_question:
-                    current_question['options'].append(line[2:].strip())
-            elif line.startswith('D:'):
-                # Add an option
+            elif line.startswith(('A:', 'B:', 'C:', 'D:')):
                 if current_question:
                     current_question['options'].append(line[2:].strip())
     
-    # Add the last question if it exists
     if current_question:
         quiz.append(current_question)
     
