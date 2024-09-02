@@ -1,16 +1,18 @@
 import os
-from flask import Flask, flash, redirect, render_template, request, session
+from flask import Flask, Blueprint, flash, redirect, render_template, request, session
 from markupsafe import escape
 from datetime import datetime
-from util import lookup
+from .utils import lookup
 from flask_login import (
     current_user,
     login_required,
 )
-from models import User, Holding, Transaction
+from .models import Users, Holding, Transaction
+from . import db
 
+investing = Blueprint('investing', __name__)
 
-@app.route("/buy", methods=["GET", "POST"])
+@investing.route("/buy", methods=["GET", "POST"])
 # @login_required
 def buy():
     """Buy shares of a stock"""
@@ -85,16 +87,17 @@ def buy():
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
+        print(lookup('APPL'))
         return render_template("buy.html")
 
 
-@app.route("/buy/<string:symbol>")
+@investing.route("/buy/<string:symbol>")
 @login_required
 def buy_symbol(symbol):
     return render_template("buy.html", symbol=escape(symbol))
 
 
-@app.route("/sell", methods=["GET", "POST"])
+@investing.route("/sell", methods=["GET", "POST"])
 @login_required
 def sell():
     """Sell shares of a stock"""
@@ -171,7 +174,7 @@ def sell():
         return render_template("sell.html", stocks=stocks)
 
 
-@app.route("/sell/<string:symbol>")
+@investing.route("/sell/<string:symbol>")
 @login_required
 def sell_symbol(symbol):
     user = current_user

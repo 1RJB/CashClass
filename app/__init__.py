@@ -43,8 +43,10 @@ def create_app(config_class=Config):
 
         from app.auth import auth
         from app.views import views
+        from app.investing import investing
 
         app.register_blueprint(auth)
         app.register_blueprint(views)
+        app.register_blueprint(investing)
 
     return app

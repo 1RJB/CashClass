@@ -4,7 +4,7 @@ from datetime import datetime
 
 class Users(db.Model, UserMixin):
     def get_id(self):
-        return self.email     
+        return self.email
     email = db.Column(db.String(100), primary_key=True, unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     name = db.Column(db.String(20))
@@ -19,7 +19,7 @@ class Holding(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     symbol = db.Column(db.String(5), nullable=False)
     shares = db.Column(db.Integer, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.email"), nullable=False)
 
     def __repr__(self):
         return "<Holding %r>" % self.symbol
@@ -32,7 +32,7 @@ class Transaction(db.Model):
     shares = db.Column(db.Integer, nullable=False)
     price = db.Column(db.Float, nullable=False)
     timestamp = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.email"), nullable=False)
 
     def __repr__(self):
         return "<Transaction %r>" % self.timestamp

@@ -47,6 +47,7 @@ def lookup(symbol):
             "change_percent": change_percent
         }
     except (requests.RequestException, ValueError, KeyError, IndexError):
+        print("Errored")
         return None
 
 def usd(value):
