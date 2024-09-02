@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Flashcards</h2>
+        <div id="flashcard-container" class="d-flex justify-content-center">
+            <div class="flashcard">
+                <div class="card front">
+                    <div class="card-body">
+                        <h5 class="card-title">Question</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+                <div class="card back">
+                    <div class="card-body">
+                        <h5 class="card-title">Answer</h5>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <button class="btn btn-secondary" onclick="prevCard()">Previous</button>
+            <button class="btn btn-primary" onclick="flipCard()">Flip</button>
+            <button class="btn btn-secondary" onclick="nextCard()">Next</button>
+            <button class="btn btn-info" onclick="shuffleCards()">Shuffle</button>
+        </div>
+        <div class="text-center mt-3">
+            <p id="progress">Card 1 of {{ flashcards|length }}</p>
+            <div class="progress">
+                <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+{% endblock %}

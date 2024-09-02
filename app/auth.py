@@ -10,8 +10,17 @@ import datetime
 from bokeh.plotting import figure, show, output_file
 from bokeh.embed import components 
 from bokeh.resources import CDN
+from .models import Flashcard
 
-# TODO: insert root url ('/') codes here
+@auth.route('/flashcards')
+@login_required
+def flashcards():
+    # Query the database for flashcards belonging to the current user
+    user_flashcards = Flashcard.query.filter_by(user_id=current_user.email).all()
+    
+    # Render the template with the flashcards
+    return render_template('flashcards.html', flashcards=user_flashcards)
+
 
 @auth.route('/plot')
 def plot():

@@ -44,3 +44,14 @@ class Expenses(db.Model):
     date_purchase = db.Column(db.String(10), nullable = False) 
     amount = db.Column(db.Float, nullable = False)
     user = db.Column(db.String(100), db.ForeignKey('users.email'), nullable=False)
+
+class Flashcard(db.Model):
+    __tablename__ = "flashcards"
+
+    id = db.Column(db.Integer, primary_key=True)
+    question = db.Column(db.String(500), nullable=False)
+    answer = db.Column(db.String(500), nullable=False)
+    user_id = db.Column(db.String(100), db.ForeignKey("users.email"), nullable=False)
+
+    def __repr__(self):
+        return "<Flashcard %r>" % self.question
