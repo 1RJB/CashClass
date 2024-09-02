@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Financial Literacy Quiz</h1>
+    <form action="" method="post">
+        {% if quiz %}
+            <ul>
+                {% for question in quiz %}
+                    <li>
+                        <strong>{{ question['question'] | safe }}</strong>
+                        <ul>
+                            {% set options = question['incorrect_answers'] + [question['correct_answer']] | random %}
+                            {% for option in options %}
+                                <li>{{ option | safe }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No quiz available at the moment.</p>
+        {% endif %}
+    </form>
+    <button onclick="window.location.reload();">Refresh Quiz</button>
+{% endblock %}
