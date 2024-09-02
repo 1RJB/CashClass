@@ -1,4 +1,4 @@
 class Config:
     SECRET_KEY = "1234567890"
-    DATABASE_NAME='myDB.db'
+    DATABASE_NAME='invest.db'
     SQLALCHEMY_DATABASE_URI='sqlite:///'+DATABASE_NAME
