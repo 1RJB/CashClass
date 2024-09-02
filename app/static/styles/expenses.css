@@ -1,40 +1,48 @@
 .card {
-    margin-left:20px;
-    margin-right:20px;
-    border-radius:10px;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
 }
 
 .card-title p {
-    padding-top: 10px;
-    padding-left: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+    padding: 10px;
+    background-color: #2098ce;
+    color: #fff;
 }
 
 .expense-btn {
     display: inline-block;
-    width: 50%;
-    margin-top: 10px;
-    height: 50px;
-    background: #2098ce;
-    border-radius: 50px;
-    padding: 11px;
-    font-size: 20px;
+    width: 150px;
+    height: 40px;
+    background-color: #2098ce;
     color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
     text-decoration: none;
-    font-weight: 500;
-    border: none;
-    box-shadow: none;
+    border-radius: 5px;
+    margin-top: 10px;
     cursor: pointer;
 }
 
-    .expense-btn:hover,
-    .expenseb-tn:focus {
-        color: white;
-        box-shadow: 0 0 0 2px white, 0 0 0 3px #2098ce;
-    }
+.expense-btn:hover {
+    background-color: #156b99;
+}
 
-
-.td button{
-    all: unset;
+.td button {
     cursor: pointer;
-    border:none;
+    border: none;
+    background-color: transparent;
+    color: #2098ce;
+    font-size: 14px;
+    text-decoration: underline;
+}
+
+.td button:hover {
+    color: #156b99;
 }
