@@ -1,5 +1,5 @@
 # ExpenseCalculator
-Code Overflow Hackathon 2024 Group 13
+## Code Overflow Hackathon 2024 Group 13
 
 Problem Statement:
 Create a web based solution to increase awareness and improve financial literacy amongst teenagers (ie debt management, loaning, saving etc)
