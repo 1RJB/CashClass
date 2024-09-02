@@ -11,7 +11,7 @@ from bokeh.plotting import figure, show, output_file
 from bokeh.embed import components 
 from bokeh.resources import CDN
 from .models import Flashcard
-import requests
+from transformers import pipeline
 
 @auth.route('/flashcards')
 @login_required
@@ -116,21 +116,65 @@ def logout():
     logout_user()
     return redirect(url_for('auth.home'))
 
-# Define the URL for the Open Trivia Database API
-QUIZ_API_URL = 'https://opentdb.com/api.php?amount=5&category=21&type=multiple'
+# Initialize Hugging Face pipeline
+generator = pipeline('text-generation', model='EleutherAI/gpt-neo-1.3B')
 
 def get_quiz():
     try:
-        response = requests.get(QUIZ_API_URL)
-        response.raise_for_status()
-        data = response.json()
-        return data['results']
-    except requests.RequestException as e:
+        # Generate quiz text using the Hugging Face model
+        response = generator(
+            "Generate a quiz with 5 questions about financial literacy. Provide questions and multiple-choice options in a format like: Q: Question? A: Option 1 B: Option 2 C: Option 3 D: Option 4",
+            max_length=150,
+            num_return_sequences=1
+        )
+        quiz_text = response[0]['generated_text'].strip()
+        # Parse the quiz data
+        return parse_quiz_data(quiz_text)
+    except Exception as e:
         print(f"Error fetching quiz data: {e}")
         return []
 
-@auth.route('/quizes')
-@login_required
+def parse_quiz_data(quiz_text):
+    # Split the quiz text into lines
+    lines = quiz_text.split('\n')
+
+    # Initialize a list to hold the quiz questions
+    quiz = []
+    current_question = None
+
+    for line in lines:
+        line = line.strip()
+        if line:
+            if line.startswith('Q:'):
+                # If there's a current question, add it to the quiz list
+                if current_question:
+                    quiz.append(current_question)
+                # Start a new question
+                current_question = {'question': line[2:].strip(), 'options': []}
+            elif line.startswith('A:'):
+                # Add an option
+                if current_question:
+                    current_question['options'].append(line[2:].strip())
+            elif line.startswith('B:'):
+                # Add an option
+                if current_question:
+                    current_question['options'].append(line[2:].strip())
+            elif line.startswith('C:'):
+                # Add an option
+                if current_question:
+                    current_question['options'].append(line[2:].strip())
+            elif line.startswith('D:'):
+                # Add an option
+                if current_question:
+                    current_question['options'].append(line[2:].strip())
+    
+    # Add the last question if it exists
+    if current_question:
+        quiz.append(current_question)
+    
+    return quiz
+
+@auth.route('/quiz')
 def quiz():
     quiz = get_quiz()
-    return render_template('quizes.html', quiz=quiz)
+    return render_template('quiz.html', quiz=quiz)
