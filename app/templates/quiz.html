@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+    <h1>Financial Literacy Quiz</h1>
+    <form action="" method="post">
+        {% if quiz %}
+            <ul>
+                {% for question in quiz %}
+                    <li>
+                        <strong>{{ question['question'] }}</strong>
+                        <ul>
+                            {% for option in question['options'] %}
+                                <li>{{ option }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No quiz available at the moment.</p>
+        {% endif %}
+    </form>
+    <button onclick="window.location.reload();">Refresh Quiz</button>
+{% endblock body %}
