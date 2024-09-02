@@ -124,7 +124,7 @@ def get_quiz():
         # Generate quiz text using the Hugging Face model
         response = generator(
             "Generate a quiz with 5 questions. The quiz aims to improve 18 to 24 year old's financial literacy. Each question should be followed by four multiple-choice options. Give in this format --> Q: <question goes here>? A: <Option 1 goes here> B: <Option 2 goes here> C: <Option 3 goes here> D: <Option 4 goes here>",
-            max_length=10000,
+            max_length=1024,
             num_return_sequences=1,
             truncation=True
         )
