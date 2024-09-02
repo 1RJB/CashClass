@@ -11,6 +11,7 @@ from bokeh.plotting import figure, show, output_file
 from bokeh.embed import components 
 from bokeh.resources import CDN
 from .models import Flashcard
+import requests
 
 @auth.route('/flashcards')
 @login_required
@@ -109,9 +110,27 @@ def login():
 
     return render_template('login.html', form=form)
 
-
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('auth.home'))
+
+# Define the URL for the Open Trivia Database API
+QUIZ_API_URL = 'https://opentdb.com/api.php?amount=5&category=21&type=multiple'
+
+def get_quiz():
+    try:
+        response = requests.get(QUIZ_API_URL)
+        response.raise_for_status()
+        data = response.json()
+        return data['results']
+    except requests.RequestException as e:
+        print(f"Error fetching quiz data: {e}")
+        return []
+
+@auth.route('/quizes')
+@login_required
+def quiz():
+    quiz = get_quiz()
+    return render_template('quizes.html', quiz=quiz)
