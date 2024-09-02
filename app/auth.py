@@ -16,7 +16,7 @@ from bokeh.resources import CDN
 @auth.route('/plot')
 def plot():
     start = datetime.datetime(2021, 10, 1)
-    end = datetime.datetime(2022, 12, 1)
+    end = datetime.datetime(2024, 9, 1)
 
     df = yf.download("GOOG", start=start, end=end)
 
