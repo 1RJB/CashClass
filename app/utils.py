@@ -14,7 +14,7 @@ import uuid
 def lookup(symbol):
     """Look up quote for symbol."""
     symbol = symbol.upper()
-    end = datetime.now(pytz.timezone("Asia/Singapore"))
+    end = datetime.now(pytz.timezone("US/Eastern"))
     start = end - timedelta(days=7)
 
     # Yahoo Finance API
@@ -27,7 +27,7 @@ def lookup(symbol):
 
     # Query API
     try:
-        response = requests.get(url, cookies={"session": str(uuid.uuid4())}, headers={"User-Agent": "python-requests", "Accept": "*/*"})
+        response = requests.get(url, cookies={"session": str(uuid.uuid4())}, headers={"User-Agent": "curl/7.68.0", "Accept": "*/*"})
         response.raise_for_status()
         quotes = list(csv.DictReader(response.content.decode("utf-8").splitlines()))
         quotes.reverse()
@@ -46,8 +46,9 @@ def lookup(symbol):
             "change": change,
             "change_percent": change_percent
         }
-    except (requests.RequestException, ValueError, KeyError, IndexError):
-        print("Errored")
+    # except (requests.RequestException, ValueError, KeyError, IndexError):
+    except Exception as e:
+        print(e)
         return None
 
 def usd(value):

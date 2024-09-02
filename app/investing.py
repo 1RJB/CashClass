@@ -13,7 +13,7 @@ from . import db
 investing = Blueprint('investing', __name__)
 
 @investing.route("/buy", methods=["GET", "POST"])
-# @login_required
+@login_required
 def buy():
     """Buy shares of a stock"""
 
@@ -87,7 +87,6 @@ def buy():
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
-        print(lookup('APPL'))
         return render_template("buy.html")
 
 
