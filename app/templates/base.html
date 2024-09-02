@@ -40,12 +40,17 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
+        {% if error %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
 
         <!-- TODO: insert <section> tag code here -->
         <section>
             {% block body %}
             {% endblock body %}
-            </section>
+        </section>
              
 
     </body>

@@ -1,14 +1,26 @@
 {% extends "base.html" %}
 {% block body %}
-
-<br>
-<br>
 <link rel="stylesheet" href="..\static\styles\form.css">
 <link rel="stylesheet" href="..\static\styles\expenses.css">
-<br>
-<br>
-<div class="card">
-</div>
+
+{% block main %}
+    <div class="p-5 mb-4 bg-pt-dark2 rounded-3">
+        <h1>Buy Shares</h1>
+        <form action="/buy" method="post">
+            <!-- needed because need authentication -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="mb-3">
+                <label for="stock1" class="form-label">Stock to buy (Input symbol)</label>
+                <input type="text" class="form-control" name="symbol" id="stock1" value="{{ symbol }}">
+            </div>
+            <div class="mb-3">
+                <label for="shares1" class="form-label">Number of shares to buy</label>
+                <input type="number" class="form-control" name="shares" id="shares1">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+{% endblock %}
 
 {% endblock body %}
 
