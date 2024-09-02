@@ -1,5 +1,5 @@
 from flask import Flask
-from app.config import Config
+from .config import Config
 # TODO: import flask_sqlalchemy
 # TODO: import flask_login
 from flask_login import LoginManager
@@ -17,7 +17,7 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
     
     
-    from .models import Users, Expenses
+    from .models import Users
 
     with app.app_context():
         # TODO: initialise sqlalchemy db here
