@@ -7,7 +7,6 @@ from datetime import date
 
 views = Blueprint('views', __name__)
 
-
 # CREATE
 @views.route('/add_expense', methods=['GET', 'POST'])
 @login_required
