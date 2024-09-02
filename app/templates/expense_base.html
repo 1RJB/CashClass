@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block body %}
+
+<br>
+<br>
+<link rel="stylesheet" href="..\static\styles\form.css">
+<link rel="stylesheet" href="..\static\styles\expenses.css">
+<br>
+<br>
+<div class="card">
+
+    <div class='form'>
+        <div class="card-body">
+
+            <form method='POST' action=''>
+                {{ form.csrf_token }}
+
+                {{ form.type.label }} 
+                {{ form.type }} 
+
+                {% if form.type.errors %}
+                    {% for error in form.type.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor%}    
+                {% endif %} 
+                <br>
+
+
+                {{ form.description.label }} 
+                {{ form.description }} 
+
+                {% if form.description.errors %}
+                    {% for error in form.description.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor%}    
+                {% endif %} 
+                </br>
+
+
+                {{ form.date.label }} 
+                {{ form.date }} 
+
+                {% if form.date.errors %}
+                    {% for error in form.date.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor%}    
+                {% endif %} 
+                <br>
+
+
+                {{ form.amount.label }} 
+                {{ form.amount(placeholder = "Ex: 5.32")}} 
+
+                {% if form.amount.errors %}
+                    {% for error in form.amount.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor%}    
+                {% endif %}  
+            </div>
+            <div class="card-footer">
+                {% block submit %}
+                {% endblock submit %}
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock body %}
+
+
+

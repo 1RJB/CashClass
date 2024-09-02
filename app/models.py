@@ -1,4 +1,4 @@
-from .templates import db 
+from . import db 
 from flask_login import UserMixin
 
 class Users(db.Model, UserMixin): 
