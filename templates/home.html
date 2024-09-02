@@ -1,0 +1,35 @@
+<!-- TODO: add home.html codes here -->
+{% extends "base.html" %}
+{% block body %}
+<br>
+<br>
+
+
+<section id="hero">
+    <div class="hero container">
+        <div>
+            <h1>Hello {{ name_user }}, <span></span></h1>
+            <h1>Ready To <span></span></h1>
+            <h1>Track Your Expenses? <span></span></h1>
+            {% if name_user %}
+                <a href="/logout" type="button" class="cta">Log Out</a> 
+            {% else %}
+                <a href="/login" type="button" class="cta">Log in</a>
+                <br>
+                <a href="/signup" type="button" class="cta">Create your Account</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+<br>
+
+
+<section id="footer">
+    <div class="footer container">
+        <p>© Google Developers Student Clubs, Nanyang Polytechnic</p>
+    </div>
+</section>
+
+
+<script src="..\static\js\home.js"></script>
+{% endblock body %}

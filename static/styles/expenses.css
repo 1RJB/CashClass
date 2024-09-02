@@ -1,0 +1,40 @@
+.card {
+    margin-left:20px;
+    margin-right:20px;
+    border-radius:10px;
+}
+
+.card-title p {
+    padding-top: 10px;
+    padding-left: 20px;
+}
+
+.expense-btn {
+    display: inline-block;
+    width: 50%;
+    margin-top: 10px;
+    height: 50px;
+    background: #2098ce;
+    border-radius: 50px;
+    padding: 11px;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+    .expense-btn:hover,
+    .expenseb-tn:focus {
+        color: white;
+        box-shadow: 0 0 0 2px white, 0 0 0 3px #2098ce;
+    }
+
+
+.td button{
+    all: unset;
+    cursor: pointer;
+    border:none;
+}

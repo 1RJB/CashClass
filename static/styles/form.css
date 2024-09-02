@@ -1,0 +1,268 @@
+* {
+    box-sizing: border-box;
+}
+
+.signin-wrapper {
+    width: 1%;
+    height: 100vh;
+    display: table-cell;
+    vertical-align: middle;
+    font-family: sans-serif;
+}
+
+.sign-panels {
+    width: 650px;
+    background: #fff;
+    box-shadow: 1px 2px 5px 10px #ECECEC;
+    padding: 40px 80px;
+    margin: 40px auto;
+    border-radius: 20px;
+    text-align: center;
+}
+
+.login, .signup {
+    position: relative;
+}
+
+
+.signin-title {
+    color: #9f9f9f;
+}
+
+    .signin-title span {
+        display: block;
+        font-size: 46px;
+        font-weight: bold;
+    }
+
+    .signin-title p {
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+.btn-google {
+    color: #fff;
+    display: inline-block;
+    width: 100%;
+    font-size: 20px;
+    height: 50px;
+    border-radius: 50px;
+    text-decoration: none;
+    padding: 11px 0;
+    font-weight: 500;
+}
+
+    .btn-google:hover,
+    .btn-google:focus {
+        color: white;
+        box-shadow: 0 0 0 2px white, 0 0 0 3px #EA4335;
+    }
+
+    .btn-google .fa {
+        margin-right: 5px;
+    }
+
+.btn-google {
+    background: #EA4335;
+    margin-right: 25px;
+}
+
+.or {
+    margin: 35px 0;
+    font-weight: 600;
+    color: #9f9f9f;
+}
+
+    .or:after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        background: #cecece;
+        position: absolute;
+        margin-top: -10px;
+        z-index: 0;
+    }
+
+    .or span {
+        display: block;
+        background: #fff;
+        width: 50px;
+        margin: auto;
+        position: relative;
+        z-index: 2;
+    }
+
+.sign-panels input {
+    width: 100%;
+    display: block;
+    margin-bottom: 15px;
+    height: 50px;
+    border-radius: 50px;
+    border: none;
+    background: #ededed;
+    text-align: center;
+    padding: 10px;
+    font-size: 15px;
+    color: #7c7c7c;
+    font-weight: 500;
+}
+
+    .sign-panels input:focus {
+        outline: none;
+    }
+
+    .sign-panels input[type="checkbox"] {
+        display: none;
+    }
+
+        .sign-panels input[type="checkbox"] + label {
+            display: block;
+            width: 50%;
+            text-align: left;
+            padding-left: 60px;
+            cursor: pointer;
+            color: #828282;
+            font-weight: 500;
+            margin-top: 10px;
+            float: left;
+            height: 50px;
+            padding-top: 15px;
+            user-select: none;
+        }
+
+        .sign-panels #signup-checkbox + label {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding-left: 60px;
+            cursor: pointer;
+            color: #828282;
+            font-weight: 500;
+            float: left;
+            height: 50px;
+            padding-top: 15px;
+        }
+
+            .sign-panels input[type="checkbox"] + label:before {
+                content: '';
+                display: block;
+                width: 15px;
+                height: 15px;
+                background: #dbdbdb;
+                position: absolute;
+                left: 30px;
+                border-radius: 50%;
+                border: 2px solid white;
+                box-shadow: 0 0 0 5px #ededed;
+                -webkit-transition: all .3s ease;
+                transition: all .3s ease;
+            }
+
+        .sign-panels input[type="checkbox"]:checked + label:before {
+            background: #2098ce;
+            box-shadow: 0 0 0 5px #2098ce;
+            -webkit-transition: all .3s ease;
+            transition: all .3s ease;
+        }
+
+
+.btn-signin {
+    display: inline-block;
+    width: 50%;
+    margin-top: 10px;
+    height: 50px;
+    background: #2098ce;
+    border-radius: 50px;
+    padding: 11px;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+    .btn-signin:hover,
+    .btn-signin:focus {
+        color: white;
+        box-shadow: 0 0 0 2px white, 0 0 0 3px #2098ce;
+    }
+
+.btn-signup {
+    display: inline-block;
+    width: 100%;
+    margin-top: 10px;
+    height: 50px;
+    background: #2098ce;
+    border-radius: 50px;
+    padding: 11px;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+    .btn-signup:hover,
+    .btn-signup:focus {
+        color: white;
+        box-shadow: 0 0 0 2px white, 0 0 0 3px #2098ce;
+    }
+
+.btn-reset, .btn-member, .btn-fade {
+    font-size: 19px;
+    font-weight: 500;
+    color: #9f9f9f;
+    display: block;
+    margin: 30px auto 0;
+    text-decoration: none;
+}
+
+.btn-member {
+    margin-top: 15px;
+}
+
+    .btn-reset .fa, .btn-member .fa {
+        margin-left: 6px;
+    }
+
+
+@media screen and (max-width: 768px) {
+    .sign-panels {
+        width: 90%;
+        padding: 40px;
+    }
+}
+
+@media screen and (max-width: 570px) {
+    .sign-panels {
+        padding: 40px 20px;
+    }
+
+    .btn-google {
+        width: 100%;
+    }
+
+    .btn-google {
+        margin-right: 0;
+        margin-bottom: 25px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sign-panels input[type="checkbox"] + label {
+        width: 100%;
+    }
+
+    .btn-signin {
+        width: 80%;
+    }
+
+    .signin-title span {
+        font-size: 36px;
+    }
+}
