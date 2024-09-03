@@ -1,7 +1,7 @@
 import os
 from flask import Flask, Blueprint, flash, redirect, render_template, request, session
 from markupsafe import escape
-from datetime import datetime
+# from datetime import datetime
 from .utils import lookup, get_news
 from flask_login import (
     current_user,
@@ -9,7 +9,11 @@ from flask_login import (
 )
 from .models import Users, Holding, Transaction
 from . import db
-
+import yfinance as yf
+from bokeh.plotting import figure, show, output_file
+from bokeh.embed import components 
+from bokeh.resources import CDN
+import datetime
 investing = Blueprint('investing', __name__)
 
 @investing.route("/portfolio")
@@ -106,7 +110,7 @@ def buy():
             symbol=quote["symbol"],
             shares=int(request.form.get("shares")),
             price=quote["price"],
-            timestamp=datetime.now(),
+            timestamp=datetime.datetime.now(),
 
         )
         db.session.add(new_transaction)
@@ -196,7 +200,7 @@ def sell():
             symbol=quote["symbol"],
             shares=int(request.form.get("shares")) * (-1),
             price=quote["price"],
-            timestamp=datetime.now()
+            timestamp=datetime.datetime.now()
         )
         db.session.add(new_transaction)
 
@@ -253,7 +257,7 @@ def addcash():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
-        # Validate cash amount was submitted
+        # Validate cash amount was submitted    
         if not request.form.get("cash"):
             return render_template("addcash.html", error="Must provide a cash amount to add to account"), 400
 
@@ -354,7 +358,41 @@ def quote_symbol(stock_symbol):
         return render_template("index.html", error="Invalid symbol"), 400
 
     news_items = get_news(symbol)
+    end = datetime.datetime.today()
+    start = end - datetime.timedelta(weeks=1)
 
+    df = yf.download(symbol, start=start, end=end)
+
+    def inc_dec(c, o):
+        if c > o:
+            value = "Increase"
+        elif c < o:
+            value = "Decrease"
+        else:
+            value = "Equal"
+        return value
+
+    df["Status"] = [inc_dec(c, o) for c, o in zip(df.Close, df.Open)]
+    df["Middle"] = (df.Open+df.Close)/2
+    df["Height"] = abs(df.Close-df.Open)
+
+    p = figure(x_axis_type='datetime', width=1000, height=300, sizing_mode="scale_width")
+    p.title = "Candlestick Chart"
+    p.grid.grid_line_alpha = 0.3
+
+    hours_12 = 12*60*60*1000
+
+    p.segment(df.index, df.High, df.index, df.Low, color="black")
+
+    p.rect(df.index[df.Status == "Increase"], df.Middle[df.Status == "Increase"],
+           hours_12, df.Height[df.Status == "Increase"], fill_color="#CCFFFF", line_color="black")
+
+    p.rect(df.index[df.Status == "Decrease"], df.Middle[df.Status == "Decrease"],
+           hours_12, df.Height[df.Status == "Decrease"], fill_color="#FF3333", line_color="black")
+
+    script1, div1 = components(p)
+    cdn_js = CDN.js_files[0]
+    print(df)
     # Check if user is logged in, then check if they own the stock
     logged_in = False
     user_holding = None
@@ -386,4 +424,4 @@ def quote_symbol(stock_symbol):
                 "gain_loss": value - cost
             }
 
-    return render_template("quote.html", quote=quote, news_items=news_items, logged_in=logged_in, user_holding=user_holding)
+    return render_template("quote.html", quote=quote, news_items=news_items, logged_in=logged_in, user_holding=user_holding, script1=script1, div1=div1, cdn_js=cdn_js)

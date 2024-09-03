@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block body %}
     <h1>Quote</h1>
 
@@ -46,10 +45,13 @@
             </div>
         {% endif %}
     </div>
+    <div class="col-md-4">
+        {{ script1 | safe }}
+        {{ div1 | safe }}
+    </div>
+    <!-- <h2>News</h2> -->
 
-    <h2>News</h2>
-
-    <div class="row row-cols-1 row-cols-md-2 g-4">
+    <!-- <div class="row row-cols-1 row-cols-md-2 g-4">
         {% for item in news_items %}
         <div class="col">
             <div class="card mb-3" style="max-width: 540px;">
@@ -68,5 +70,5 @@
             </div>
         </div>
         {% endfor %}
-    </div>
+    </div> -->
 {% endblock %}

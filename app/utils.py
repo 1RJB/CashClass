@@ -6,7 +6,7 @@ from flask import redirect, render_template, request, session
 from functools import wraps
 
 import csv
-from datetime import datetime, timedelta
+import datetime
 import pytz
 import uuid
 
@@ -17,8 +17,8 @@ def usd(value):
 def lookup(symbol):
     """Look up quote for symbol."""
     symbol = symbol.upper()
-    end = datetime.now(pytz.timezone("US/Eastern"))
-    start = end - timedelta(days=7)
+    end = datetime.datetime.now(pytz.timezone("US/Eastern"))
+    start = end - datetime.timedelta(days=7)
 
     # Yahoo Finance API
     url = (
@@ -64,7 +64,7 @@ def get_news(query, days=7, count=4):
     # Make News API request
     try:
         api_key = os.getenv("NEWS_API_KEY")
-        date = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d')
+        date = (datetime.datetime.now() - datetime.timedelta(days=days)).strftime('%Y-%m-%d')
         url = f"https://newsapi.org/v2/everything?q={urllib.parse.quote_plus(query)}&from={date}&sortBy=popularity&apiKey={api_key}"
         response = requests.get(url)
         response.raise_for_status()
@@ -87,7 +87,7 @@ def get_news(query, days=7, count=4):
                 "description": item["description"],
                 "url": item["url"],
                 "url_to_image": item["urlToImage"],
-                "date": datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+                "date": datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
             }          
             articles.append(article)
 
