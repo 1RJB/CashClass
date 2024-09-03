@@ -6,11 +6,6 @@ from .forms import SignUp, Login
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 auth = Blueprint('auth', __name__)
-import yfinance as yf
-import datetime
-from bokeh.plotting import figure, show, output_file
-from bokeh.embed import components 
-from bokeh.resources import CDN
 from .models import Flashcard
 import anthropic
 
@@ -55,46 +50,6 @@ def add_flashcard():
 @login_required
 def lesson_home():
     return render_template('lesson_home.html')
-
-
-@auth.route('/plot')
-def plot():
-    start = datetime.datetime(2021, 10, 1)
-    end = datetime.datetime(2024, 9, 1)
-
-    df = yf.download("GOOG", start=start, end=end)
-
-    def inc_dec(c, o):
-        if c > o:
-            value = "Increase"
-        elif c < o:
-            value = "Decrease"
-        else:
-            value = "Equal"
-        return value
-
-    df["Status"] = [inc_dec(c, o) for c, o in zip(df.Close, df.Open)]
-    df["Middle"] = (df.Open+df.Close)/2
-    df["Height"] = abs(df.Close-df.Open)
-
-    p = figure(x_axis_type='datetime', width=1000, height=300, sizing_mode="scale_width")
-    p.title = "Candlestick Chart"
-    p.grid.grid_line_alpha = 0.3
-
-    hours_12 = 12*60*60*1000
-
-    p.segment(df.index, df.High, df.index, df.Low, color="black")
-
-    p.rect(df.index[df.Status == "Increase"], df.Middle[df.Status == "Increase"],
-           hours_12, df.Height[df.Status == "Increase"], fill_color="#CCFFFF", line_color="black")
-
-    p.rect(df.index[df.Status == "Decrease"], df.Middle[df.Status == "Decrease"],
-           hours_12, df.Height[df.Status == "Decrease"], fill_color="#FF3333", line_color="black")
-
-    script1, div1 = components(p)
-    cdn_js = CDN.js_files[0]
-    print(df)
-    return render_template("plot.html", script1=script1, div1=div1, cdn_js=cdn_js)
 
 @auth.route('/')
 def home():
@@ -206,27 +161,28 @@ def parse_quiz_data(quiz_text):
         return []
 
 @auth.route('/quiz')
+@login_required
 def quiz():
     quiz = get_quiz()
     return render_template('quiz.html', quiz=quiz)
 
-@auth.route('/lesson_home.html')
+@auth.route('/lesson_home')
 def lesson_main():
-    return render_template('lesson_home.html', lesson_main=lesson_main )
+    return render_template('lesson_home', lesson_main=lesson_main )
 
-@auth.route('/lesson1.html')
+@auth.route('/lesson1')
 def lesson1():
     return render_template('lesson1.html', lesson1=lesson1)
 
-@auth.route('/lesson2.html')
+@auth.route('/lesson2')
 def lesson2():
     return render_template('lesson2.html', lesson2=lesson2)
 
-@auth.route('/lesson3.html')
+@auth.route('/lesson3')
 def lesson3():
     return render_template('lesson3.html', lesson3=lesson3)
 
-@auth.route('/lesson4.html')
+@auth.route('/lesson4')
 def lesson4():
     return render_template('lesson4.html', lesson4=lesson4)
 
