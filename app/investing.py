@@ -359,7 +359,7 @@ def quote_symbol(stock_symbol):
 
     news_items = get_news(symbol)
     end = datetime.datetime.today()
-    start = end - datetime.timedelta(weeks=1)
+    start = end - datetime.timedelta(weeks=10)
 
     df = yf.download(symbol, start=start, end=end)
 
@@ -377,7 +377,7 @@ def quote_symbol(stock_symbol):
     df["Height"] = abs(df.Close-df.Open)
 
     p = figure(x_axis_type='datetime', width=1000, height=300, sizing_mode="scale_width")
-    p.title = "Candlestick Chart"
+    p.title = f"Chart of {symbol}"
     p.grid.grid_line_alpha = 0.3
 
     hours_12 = 12*60*60*1000

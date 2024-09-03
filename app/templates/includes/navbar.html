@@ -1,34 +1,53 @@
-<nav class="navbar sticky-top  navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-    <a class="navbar-brand" href="#">$$ Tracker</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar sticky-top navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+  <a class="navbar-brand" href="#">$$ Tracker</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/#">Home <span class="sr-only">(current)</span></a>
-        </li>
-        {% if current_user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="/expenses">Expenses</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/add_expense">Add</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/flashcards">Flashcards</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/lesson_home">Lessons</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/plot">Plot</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/quiz">Quiz</a>
-        </li>
-        {%endif%}
-      </ul>
-    </div>
-  </nav>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/#">Home <span class="sr-only">(current)</span></a>
+      </li>
+
+      {% if current_user.is_authenticated %}
+
+      <!-- Expenses Dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="expensesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Expenses
+        </a>
+        <div class="dropdown-menu" aria-labelledby="expensesDropdown">
+          <a class="dropdown-item" href="/expenses">Expenses</a>
+          <a class="dropdown-item" href="/add_expense">Add Expense</a>
+        </div>
+      </li>
+
+      <!-- Education Dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="educationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Education
+        </a>
+        <div class="dropdown-menu" aria-labelledby="educationDropdown">
+          <a class="dropdown-item" href="/quiz">Quiz</a>
+          <a class="dropdown-item" href="/flashcards">Flashcards</a>
+          <a class="dropdown-item" href="/lesson_home">Lessons</a>
+        </div>
+      </li>
+
+      <!-- Trading Dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="tradingDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Trading
+        </a>
+        <div class="dropdown-menu" aria-labelledby="tradingDropdown">
+          <a class="dropdown-item" href="/portfolio">Stocks</a>
+          <a class="dropdown-item" href="/buy">Buy</a>
+          <a class="dropdown-item" href="/sell">Sell</a>
+        </div>
+      </li>
+
+      {% endif %}
+    </ul>
+  </div>
+</nav>
