@@ -23,7 +23,6 @@
     </head>
     <body>
 
-        <!-- TODO: insert navbar code here -->
         {% include 'includes/navbar.html' %}
 
         {% with messages = get_flashed_messages(with_categories=true)%}
@@ -49,7 +48,6 @@
             </div>
         {% endif %}
 
-        <!-- TODO: insert <section> tag code here -->
         <section>
             {% block body %}
             {% endblock body %}

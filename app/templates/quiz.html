@@ -1,26 +1,34 @@
 {% extends "base.html" %}
 {% block body %}
-    <h1>Financial Literacy Quiz</h1>
+    <h1 style="margin-top: 3px;">Financial Literacy Quiz</h1>
     <link rel="stylesheet" href="../static/styles/quiz.css">
-    <form action="" method="post">
-            <ul>
-                {% for question in quiz %}
-                    <li value="1">
-                        <strong>{{ question['question'] }}</strong>
-                        <ul>
-                            {% for option in question['options'] %}
-                                <li value="A">
-                                    <label>
-                                        <input type="radio" name="{{ question['id'] }}" value="{{ option }}">
-                                        {{ option }}
-                                    </label>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                {% endfor %}
-            </ul>
-            <button type="submit">Submit Quiz</button>
+    <form action="/quiz" method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        <ol type="1">
+            {% for question in quiz %}
+                <li>
+                    <strong>{{ question['question'] }}</strong>
+                    <ol type="A">
+                        {% for option in question['options'] %}
+                            <li>
+                                <label>
+                                    <input type="radio" name="{{ question['id'] }}" value="{{ option }}" {% if question['selected'] == option %}checked{% endif %}>
+                                    {{ option }}
+                                    {% if question['selected'] == option %}
+                                        {% if question['selected'] == question['correct_answer'] %}
+                                            <span style="color: green;">(Correct)</span>
+                                        {% else %}
+                                            <span style="color: red;">(Incorrect, correct answer: {{ question['correct_answer'] }})</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </label>
+                            </li>
+                        {% endfor %}
+                        </ol>
+                </li>
+            {% endfor %}
+        </ol>
+        <button type="submit">Submit Quiz</button>
     </form>
     <button onclick="window.location.reload();">Refresh Quiz</button>
 {% endblock body %}

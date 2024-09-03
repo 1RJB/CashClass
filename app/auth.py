@@ -7,7 +7,6 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 auth = Blueprint('auth', __name__)
 from .models import Flashcard
-import anthropic
 
 auth = Blueprint('auth', __name__)
 
@@ -119,7 +118,7 @@ def get_quiz():
             messages=[
                 {
                     "role": "user",
-                    "content": 'DO NOT RESPOND IN ANYTHING OTHER THAN JSON FORMAT. JUST GIVE ME THE JSON RESPONSE. Give 5 multiple choice questions for my quiz. The quiz aims to improve a regularly financial illiterate 18 to 24 year old in Singapore\'s financial literacy. Each question should be followed by four multiple-choice options. Give the questions in this format, using double quotes: { "1": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>" }, "answer": "A" }, "2": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>", }, "answer": "B" } }'
+                    "content": 'DO NOT EVER RESPOND IN ANYTHING OTHER THAN JSON FORMAT. JUST GIVE ME IN THE JSON RESPONSE. Give 5 multiple choice questions for my quiz. The quiz aims to improve a regularly financial illiterate 18 to 24 year old in Singapore\'s financial literacy. Each question should be followed by four multiple-choice options. Give the questions in JSON format only, using double quotes in JSON FORMAT: { "1": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>" }, "answer": "A" }, "2": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>", }, "answer": "B" } }\n MAKE SURE ALWAYS ANSWER IN JSON FORMAT'
                 }
             ]
         )
@@ -128,6 +127,9 @@ def get_quiz():
         
         # Parse the quiz data
         quiz_data = parse_quiz_data(quiz_text)
+         # Assign IDs to the questions
+        for idx, question in enumerate(quiz_data, start=1):
+            question['id'] = idx  # Set the question ID for reference in the form
         print("Parsed Quiz Data:", quiz_data)  # Debugging line
         return quiz_data
     except Exception as e:
@@ -148,10 +150,12 @@ def parse_quiz_data(quiz_text):
         
         # Convert the dictionary into the desired format
         quiz = []
-        for _, question_data in quiz_dict.items():
+        for idx, question_data in quiz_dict.items():
             question = {
+                'id': idx,  # Assign the ID based on the dictionary key
                 'question': question_data['question'],
-                'options': [question_data['answers'][key] for key in 'ABCD']
+                'options': [question_data['answers'][key] for key in 'ABCD'],
+                'correct_answer': question_data['answer']  # Include the correct answer
             }
             quiz.append(question)
         
@@ -160,10 +164,28 @@ def parse_quiz_data(quiz_text):
         print(f"Error parsing quiz data: {e}")
         return []
 
-@auth.route('/quiz')
+@auth.route('/quiz', methods=['GET', 'POST'])
 @login_required
 def quiz():
-    quiz = get_quiz()
+    quiz = get_quiz()  # Retrieve or generate the quiz
+    
+    if request.method == 'POST':
+        # Get the user's answers from the form
+        user_answers = request.form.to_dict()
+
+        # Validate the answers and store results
+        correct_count = 0
+        for question in quiz:
+            question_id = question['id']
+            selected_answer = user_answers.get(str(question_id))
+            question['selected'] = selected_answer
+            question['is_correct'] = (selected_answer == question['correct_answer'])
+            if question['is_correct']:
+                correct_count += 1
+
+        # Optionally, you could flash a message or pass the score to the template
+        flash(f"You got {correct_count} out of {len(quiz)} correct!", "success")
+
     return render_template('quiz.html', quiz=quiz)
 
 @auth.route('/lesson_home')

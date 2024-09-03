@@ -222,7 +222,6 @@ img {
 
 /* Hero Section */
 #hero {
-  background-image: url(../images/hero-bg.png);
   background-size: cover;
   background-position: top center;
   position: relative;
@@ -912,4 +911,25 @@ footer {
 
 h4 > span {
   color: #000;
+}
+
+/* Smooth fade-in/out effect for the dynamic word */
+#dynamic-word-container {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+
+#dynamic-word {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: fadeInOut 4s ease-in-out infinite;
+}
+
+/* Keyframes for fade-in/out effect */
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; transform: translateY(20px); }
+  20%, 80% { opacity: 1; transform: translateY(0); }
 }
