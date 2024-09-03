@@ -9,12 +9,18 @@
                         <strong>{{ question['question'] }}</strong>
                         <ul>
                             {% for option in question['options'] %}
-                                <li>{{ option }}</li>
+                                <li>
+                                    <label>
+                                        <input type="radio" name="{{ question['id'] }}" value="{{ option }}">
+                                        {{ option }}
+                                    </label>
+                                </li>
                             {% endfor %}
                         </ul>
                     </li>
                 {% endfor %}
             </ul>
+            <button type="submit">Submit Quiz</button>
         {% else %}
             <p>No quiz available at the moment.</p>
         {% endif %}
