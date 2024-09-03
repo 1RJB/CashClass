@@ -22,6 +22,11 @@ def flashcards():
     # Render the template with the flashcards
     return render_template('flashcards.html', flashcards=user_flashcards)
 
+@auth.route('/lesson_home')
+@login_required
+def lesson_home():
+    return render_template('lesson_home.html')
+
 
 @auth.route('/plot')
 def plot():
@@ -117,14 +122,14 @@ def logout():
     return redirect(url_for('auth.home'))
 
 # Initialize Hugging Face pipeline
-generator = pipeline('text-generation', model='openai-community/gpt2')
+generator = pipeline('text-generation', model='EleutherAI/gpt-neo-1.3B')
 # TODO: use claude / gpt4 api
 
 def get_quiz():
     try:
         # Generate quiz text using the Hugging Face model
         response = generator(
-            "Generate a quiz with 5 questions. The quiz aims to improve 18 to 24 year old's financial literacy. Each question should be followed by four multiple-choice options. Give the questions in this format: Q: <question goes here>? A: <Option 1 goes here> B: <Option 2 goes here> C: <Option 3 goes here> D: <Option 4 goes here>",
+            "Give 5 mcq questions. The quiz aims to improve 18 to 24 year old's financial literacy. Each question should be followed by four multiple-choice options. Give the questions in this format: Q: <question goes here>? A: <Option 1 goes here> B: <Option 2 goes here> C: <Option 3 goes here> D: <Option 4 goes here>",
             max_length=1024,
             num_return_sequences=1,
             truncation=True

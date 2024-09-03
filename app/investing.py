@@ -12,6 +12,58 @@ from . import db
 
 investing = Blueprint('investing', __name__)
 
+@investing.route("/portfolio")
+@login_required
+def portfolio():
+    """Show portfolio of user's stock holdings"""
+
+    # Query database for current user's stock holdings (portfolio)
+    user = current_user
+    holdings = user.holdings
+    stocks = [] # List of stock dicts
+    transactions = user.transactions
+
+    portfolio_cost = 0
+    portfolio_value = 0
+
+    # Get current prices for stocks using API
+    for holding in holdings:
+        quote = lookup(holding.symbol)
+        stock = {}
+        stock["symbol"] = holding.symbol
+        stock["name"] = quote["name"]
+        stock["price"] = float(quote["price"])
+        stock["shares"] = int(holding.shares)
+        stock["total_value"] = float(quote["price"]) * int(holding.shares)
+
+        # Calculate cost of shares (total price paid)
+        cost = 0
+        for transaction in transactions:
+            if transaction.symbol == stock["symbol"]:
+                cost += transaction.shares * transaction.price # Sold shares will be negative
+
+        stock["cost"] = cost / holding.shares
+        stock["total_cost"] = cost
+        stocks.append(stock) # Append stock dict to list of stocks
+        portfolio_value += stock["total_value"]
+
+    # Calculate cost of all portfolio transactions
+    # Don't need to check for only single transaction since SQLAlchemy
+    # with relationship returns InstrumentedList
+    # If sold stock, will subtract since shares in transaction will be negative
+    for transaction in transactions:
+        portfolio_cost += transaction.shares * transaction.price
+
+    # Format current user's portfolio info
+    user_info = {
+        "cash": user.cash,
+        "portfolio_cost": portfolio_cost,
+        "portfolio_value": portfolio_value,
+        "gain_loss": portfolio_value - portfolio_cost
+    }
+
+    return render_template("portfolio.html", stocks=stocks, user_info=user_info)
+
 @investing.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
@@ -50,7 +102,7 @@ def buy():
 
         # Record transaction in database
         new_transaction = Transaction(
-            user_id=user.id,
+            user_id=user.email,
             symbol=quote["symbol"],
             shares=int(request.form.get("shares")),
             price=quote["price"],
@@ -64,12 +116,12 @@ def buy():
 
         # Update user's stock holdings (portfolio)
         # Check if stock is already in holdings
-        found_holding = Holding.query.filter((Holding.user_id == user.id) & (Holding.symbol == new_transaction.symbol)).first()
+        found_holding = Holding.query.filter((Holding.user_id == user.email) & (Holding.symbol == new_transaction.symbol)).first()
 
         # Add stock to holdings if not already owned
         if found_holding == None:
             new_holding = Holding(
-                user_id=user.id,
+                user_id=user.email,
                 symbol=new_transaction.symbol,
                 shares=new_transaction.shares
             )
@@ -128,7 +180,7 @@ def sell():
 
         # Query database to find stock in user's holdings
         user = current_user
-        holding = Holding.query.filter((Holding.user_id==user.id) & (Holding.symbol==quote["symbol"])).first()
+        holding = Holding.query.filter((Holding.user_id==user.email) & (Holding.symbol==quote["symbol"])).first()
 
         # Check if user owns shares of stock user wants to sell
         if holding == None:
@@ -140,7 +192,7 @@ def sell():
 
         # Record transaction
         new_transaction = Transaction(
-            user_id=user.id,
+            user_id=user.email,
             symbol=quote["symbol"],
             shares=int(request.form.get("shares")) * (-1),
             price=quote["price"],
@@ -167,16 +219,16 @@ def sell():
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
+        print("aksjdaksd")
         user = current_user
         stocks = user.holdings
-
+        print(user, stocks)
         return render_template("sell.html", stocks=stocks)
-
 
 @investing.route("/sell/<string:symbol>")
 @login_required
 def sell_symbol(symbol):
     user = current_user
     stocks = user.holdings
-
+    print(user, stocks)
     return render_template("sell.html", stocks=stocks, symbol=escape(symbol))
