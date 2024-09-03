@@ -22,6 +22,11 @@ def flashcards():
     # Render the template with the flashcards
     return render_template('flashcards.html', flashcards=user_flashcards)
 
+@auth.route('/lesson_home')
+@login_required
+def lesson_home():
+    return render_template('lesson_home.html')
+
 
 @auth.route('/plot')
 def plot():
@@ -117,7 +122,7 @@ def logout():
     return redirect(url_for('auth.home'))
 
 # Initialize Hugging Face pipeline
-generator = pipeline('text-generation', model='openai-community/gpt2')
+generator = pipeline('text-generation', model='EleutherAI/gpt-neo-1.3B')
 # TODO: use claude / gpt4 api
 
 def get_quiz():
