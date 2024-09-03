@@ -6,7 +6,7 @@ from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from os import path
 from flask_sqlalchemy import SQLAlchemy
-
+from .utils import usd
 # TODO: declare sqlalchemy db here
 db = SQLAlchemy()
 csrf = CSRFProtect()
@@ -15,7 +15,8 @@ csrf = CSRFProtect()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
-    
+    # Custom filter
+    app.jinja_env.filters["usd"] = usd
     
     from .models import Users
 
