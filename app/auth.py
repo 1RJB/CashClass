@@ -7,7 +7,6 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 auth = Blueprint('auth', __name__)
 from .models import Flashcard
-import anthropic
 
 auth = Blueprint('auth', __name__)
 
@@ -165,7 +164,6 @@ def parse_quiz_data(quiz_text):
         print(f"Error parsing quiz data: {e}")
         return []
 
-
 @auth.route('/quiz', methods=['GET', 'POST'])
 @login_required
 def quiz():
@@ -174,18 +172,20 @@ def quiz():
     if request.method == 'POST':
         # Get the user's answers from the form
         user_answers = request.form.to_dict()
-        
-        # Validate the answers and add the result to the quiz data
+
+        # Validate the answers and store results
+        correct_count = 0
         for question in quiz:
             question_id = question['id']
             selected_answer = user_answers.get(str(question_id))
             question['selected'] = selected_answer
             question['is_correct'] = (selected_answer == question['correct_answer'])
-        
-        # You can optionally flash a message to the user or redirect to another page
-        flash("Quiz submitted successfully!")
-        
-        
+            if question['is_correct']:
+                correct_count += 1
+
+        # Optionally, you could flash a message or pass the score to the template
+        flash(f"You got {correct_count} out of {len(quiz)} correct!", "success")
+
     return render_template('quiz.html', quiz=quiz)
 
 @auth.route('/lesson_home')
