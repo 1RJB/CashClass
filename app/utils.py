@@ -10,6 +10,9 @@ from datetime import datetime, timedelta
 import pytz
 import uuid
 
+def usd(value):
+    """Format value as USD."""
+    return f"${value:,.2f}"
 
 def lookup(symbol):
     """Look up quote for symbol."""
