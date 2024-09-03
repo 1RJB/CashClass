@@ -1,46 +1,53 @@
-let currentCard = 0;
-const flashcards = JSON.parse('{{ flashcards|tojson|safe }}');
+let currentCardIndex = 0;
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (flashcards.length > 0) {
+        updateCard();
+        updateProgressBar();
+    } else {
+        document.getElementById('flashcard-container').innerHTML = '<p>No flashcards available. Please add new flashcards.</p>';
+    }
+});
 
 function updateCard() {
-    const flashcardElements = document.querySelectorAll('.flashcard');
-    const front = flashcardElements[0].querySelector('.front .card-text');
-    const back = flashcardElements[0].querySelector('.back .card-text');
-    front.textContent = flashcards[currentCard].question;
-    back.textContent = flashcards[currentCard].answer;
-    document.getElementById('progress').textContent = `Card ${currentCard + 1} of ${flashcards.length}`;
-    updateProgressBar();
+    const questionElement = document.getElementById('flashcard-question');
+    const answerElement = document.getElementById('flashcard-answer');
+
+    questionElement.textContent = flashcards[currentCardIndex].question;
+    answerElement.textContent = flashcards[currentCardIndex].answer;
+
+    const flashcard = document.querySelector('.flashcard');
+    flashcard.classList.remove('flipped');
 }
 
 function flipCard() {
-    const flashcard = document.querySelectorAll('.flashcard')[0];
+    const flashcard = document.querySelector('.flashcard');
     flashcard.classList.toggle('flipped');
 }
 
 function prevCard() {
-    if (currentCard > 0) {
-        currentCard--;
+    if (currentCardIndex > 0) {
+        currentCardIndex--;
         updateCard();
+        updateProgressBar();
     }
 }
 
 function nextCard() {
-    if (currentCard < flashcards.length - 1) {
-        currentCard++;
+    if (currentCardIndex < flashcards.length - 1) {
+        currentCardIndex++;
         updateCard();
+        updateProgressBar();
     }
 }
 
-function shuffleCards() {
-    flashcards.sort(() => Math.random() - 0.5);
-    currentCard = 0;
-    updateCard();
-}
-
 function updateProgressBar() {
-    const progress = ((currentCard + 1) / flashcards.length) * 100;
+    const progressText = document.getElementById('progress');
     const progressBar = document.getElementById('progress-bar');
-    progressBar.style.width = `${progress}%`;
-    progressBar.setAttribute('aria-valuenow', progress);
-}
+    const current = currentCardIndex + 1;
+    const total = flashcards.length;
+    const progressPercent = (current / total) * 100;
 
-document.addEventListener('DOMContentLoaded', updateCard);
+    progressText.textContent = `Card ${current} of ${total}`;
+    progressBar.style.width = `${progressPercent}%`;
+}
