@@ -13,6 +13,9 @@ from bokeh.embed import components
 from bokeh.resources import CDN
 from .models import Flashcard
 import anthropic
+import random
+
+auth = Blueprint('auth', __name__)
 
 @auth.route('/flashcards')
 @login_required
@@ -20,8 +23,34 @@ def flashcards():
     # Query the database for flashcards belonging to the current user
     user_flashcards = Flashcard.query.filter_by(user_id=current_user.email).all()
     
+    # Convert flashcards to a list of dictionaries
+    flashcards_data = [flashcard.to_dict() for flashcard in user_flashcards]
+    
     # Render the template with the flashcards
-    return render_template('flashcards.html', flashcards=user_flashcards)
+    return render_template('flashcards.html', flashcards=flashcards_data)
+
+
+@auth.route('/add_flashcard', methods=['GET', 'POST'])
+@login_required
+def add_flashcard():
+    if request.method == 'POST':
+        question = request.form.get('question')
+        answer = request.form.get('answer')
+        category = request.form.get('category')
+        
+        new_flashcard = Flashcard(
+            question=question,
+            answer=answer,
+            category=category,
+            user_id=current_user.email
+        )
+        db.session.add(new_flashcard)
+        db.session.commit()
+        flash('Flashcard added successfully!', 'success')
+        return redirect(url_for('auth.flashcards'))
+    
+    return render_template('add_flashcard.html')
+
 
 @auth.route('/lesson_home')
 @login_required
@@ -189,3 +218,16 @@ def lesson_main():
 @auth.route('/lesson1.html')
 def lesson1():
     return render_template('lesson1.html', lesson1=lesson1)
+
+@auth.route('/lesson2.html')
+def lesson2():
+    return render_template('lesson2.html', lesson2=lesson2)
+
+@auth.route('/lesson3.html')
+def lesson3():
+    return render_template('lesson3.html', lesson3=lesson3)
+
+@auth.route('/lesson4.html')
+def lesson4():
+    return render_template('lesson4.html', lesson4=lesson4)
+

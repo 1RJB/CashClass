@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Add Flashcard</h2>
+    <form method="POST" action="{{ url_for('auth.add_flashcard') }}">
+        <div class="form-group">
+            <label for="question">Question:</label>
+            <input type="text" class="form-control" id="question" name="question" required>
+        </div>
+        <div class="form-group">
+            <label for="answer">Answer:</label>
+            <input type="text" class="form-control" id="answer" name="answer" required>
+        </div>
+        <div class="form-group">
+            <label for="category">Category (optional):</label>
+            <input type="text" class="form-control" id="category" name="category">
+        </div>
+        <button type="submit" class="btn btn-primary">Add Flashcard</button>
+    </form>
+</div>
+{% endblock %}
