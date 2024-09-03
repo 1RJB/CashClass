@@ -1,8 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lesson 1: Budgeting Basics</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        .description {
+            display: none;
+            margin-left: 20px;
+        }
+        .toggle-button {
+            cursor: pointer;
+            color: #007bff;
+            text-decoration: underline;
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -11,17 +25,56 @@
     
     <main>
         <h2>What is Budgeting?</h2>
-        <p>Budgeting involves tracking your income and expenses to manage your finances effectively. <br>
-            Start by listing all sources of income and categorize your expenses (needs vs. wants).<br>
-            Allocate funds accordingly and stick to your budget to avoid overspending.</p>
-        <img src="\Images\WantsVSNeeds.jpg" alt="Wants vs Needs">
+        <p>Budgeting involves tracking your income and expenses to manage your finances effectively. Start by listing all sources of income and categorize your expenses into needs and wants. Allocate funds accordingly and stick to your budget to avoid overspending.</p>
+        
+        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Budgeting Image">
+        
+        <h3>Understanding Needs and Wants</h3>
+        
+        <div>
+            <div class="toggle-button" onclick="toggleDescription('needs')">Needs</div>
+            <div id="needs" class="description">
+                <p>Needs are essential expenses that are necessary for survival and well-being. These include:</p>
+                <ul>
+                    <li><strong>Housing:</strong> Rent or mortgage payments to provide a place to live.</li>
+                    <li><strong>Utilities:</strong> Electricity, water, and gas bills that keep your home functional.</li>
+                    <li><strong>Groceries:</strong> Basic food and household supplies required for daily living.</li>
+                    <li><strong>Healthcare:</strong> Medical expenses, including insurance and necessary treatments.</li>
+                    <li><strong>Transportation:</strong> Costs for getting to work or other essential places, such as public transport or car payments.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div>
+            <div class="toggle-button" onclick="toggleDescription('wants')">Wants</div>
+            <div id="wants" class="description">
+                <p>Wants are non-essential expenses that enhance your lifestyle but are not necessary for survival. These include:</p>
+                <ul>
+                    <li><strong>Dining Out:</strong> Eating at restaurants or ordering takeout.</li>
+                    <li><strong>Entertainment:</strong> Movies, concerts, and recreational activities.</li>
+                    <li><strong>Luxury Items:</strong> Designer clothes, high-end electronics, and other premium goods.</li>
+                    <li><strong>Subscriptions:</strong> Streaming services, magazines, and other optional memberships.</li>
+                    <li><strong>Vacations:</strong> Travel and leisure trips that are not essential for daily life.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <p>By clearly distinguishing between needs and wants, you can create a more effective budget that ensures you cover your essentials while making informed decisions about discretionary spending.</p>
     </main>
-
-    
     
     <footer>
         <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleDescription(id) {
+            var desc = document.getElementById(id);
+            if (desc.style.display === "none" || desc.style.display === "") {
+                desc.style.display = "block";
+            } else {
+                desc.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
-
