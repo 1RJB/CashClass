@@ -180,3 +180,16 @@ def lesson_main():
 @auth.route('/lesson1.html')
 def lesson1():
     return render_template('lesson1.html', lesson1=lesson1)
+
+@auth.route('/lesson2.html')
+def lesson2():
+    return render_template('lesson2.html', lesson2=lesson2)
+
+@auth.route('/lesson3.html')
+def lesson3():
+    return render_template('lesson3.html', lesson3=lesson3)
+
+@auth.route('/lesson4.html')
+def lesson4():
+    return render_template('lesson4.html', lesson4=lesson4)
+

@@ -1,8 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lesson 2: Saving Strategies</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        .description {
+            display: none;
+            margin-left: 20px;
+        }
+        .example {
+            cursor: pointer;
+            color: #007bff;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -11,23 +24,39 @@
     
     <main>
         <h2>Effective Saving Strategies</h2>
-        <p>Focus on setting aside a portion of your income regularly. <br> 
-            Prioritize building an emergency fund, and consider automating savings to ensure consistency. <br>
-            Look for high-yield savings accounts to maximize interest earnings.</p>
-
-        <p>Example of saving Strategies can be 
-            <li>
-                <ul>Pay Yourself First: Automatically save a portion of your income before spending.</ul>
-                <ul>Budgeting: Track expenses and cut unnecessary costs to boost savings.</ul>
-                <ul>Emergency Fund: Save 3-6 months of expenses for financial security.</ul>
-            </li>
+        <p>Focus on setting aside a portion of your income regularly. <br> Prioritize building an emergency fund, and consider automating savings to ensure consistency. <br> Look for high-yield savings accounts to maximize interest earnings.</p>
+        
+        <h3>Examples of Saving Strategies:</h3>
+        <ul>
+            <li class="example" onclick="toggleDescription('desc1')">Pay Yourself First</li>
+            <p id="desc1" class="description">Automatically save a portion of your income before spending.</p>
             
-        </p>
-        <img src="" alt="">
+            <li class="example" onclick="toggleDescription('desc2')">Budgeting</li>
+            <p id="desc2" class="description">Track expenses and cut unnecessary costs to boost savings.</p>
+            
+            <li class="example" onclick="toggleDescription('desc3')">Emergency Fund</li>
+            <p id="desc3" class="description">Save 3-6 months of expenses for financial security.</p>
+        </ul>
+
+        <figure>
+            <img src="your_image_path_here.jpg" alt="Saving Strategies">
+            <figcaption>A visual representation of saving strategies.</figcaption>
+        </figure>
     </main>
     
     <footer>
         <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleDescription(id) {
+            var desc = document.getElementById(id);
+            if (desc.style.display === "none") {
+                desc.style.display = "block";
+            } else {
+                desc.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>
