@@ -8,7 +8,7 @@
                         <strong>{{ question['question'] }}</strong>
                         <ul>
                             {% for option in question['options'] %}
-                                <li>
+                                <li value="1">
                                     <label>
                                         <input type="radio" name="{{ question['id'] }}" value="{{ option }}">
                                         {{ option }}
