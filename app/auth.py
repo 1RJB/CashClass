@@ -13,7 +13,6 @@ from bokeh.embed import components
 from bokeh.resources import CDN
 from .models import Flashcard
 import anthropic
-import random
 
 auth = Blueprint('auth', __name__)
 

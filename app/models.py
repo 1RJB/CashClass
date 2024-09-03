@@ -51,7 +51,7 @@ class Flashcard(db.Model):
     question = db.Column(db.String(255), nullable=False)
     answer = db.Column(db.String(255), nullable=False)
     category = db.Column(db.String(50), nullable=True)
-    user_id = db.Column(db.String(255), db.ForeignKey('user.email'))
+    user_id = db.Column(db.String(255), db.ForeignKey('users.email'))  # Corrected ForeignKey reference
 
     def to_dict(self):
         return {
