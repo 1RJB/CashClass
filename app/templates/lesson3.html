@@ -1,67 +1,114 @@
 {% extends "base.html" %}
 
 {% block body %}
-    <header>
-        <h1>Lesson 3: Understanding Debit and Credit</h1>
-    </header>
-    
-    <main>
-        <p>In accounting, a debit is an entry that increases asset or expense accounts and decreases liability, revenue, and equity accounts, while a credit is an entry that decreases asset or expense accounts and increases liability, revenue, and equity accounts. <br>
-            Together, debits and credits are used to ensure that the accounting equation remains balanced and accurately reflects financial transactions.</p>
-        
-        <h2>What is Debit?</h2>
-        <p>A debit increases the value of asset and expense accounts or decreases the value of liability, revenue, and equity accounts.</p>
-        
-        <div>
-            <div class="toggle-button" onclick="toggleDescription('debit')">More on Debit</div>
-            <div id="debit" class="description">
-                <ul>
-                    <li><strong>Assets:</strong> Debits increase the value of asset accounts.</li>
-                    <li><strong>Expenses:</strong> Debits increase expense accounts.</li>
-                    <li><strong>Liabilities:</strong> Debits decrease the value of liability accounts.</li>
-                    <li><strong>Revenue:</strong> Debits decrease revenue accounts.</li>
-                    <li><strong>Equity:</strong> Debits decrease equity accounts.</li>
-                </ul>
-            </div>
-        </div>
+<header>
+    <h1>Lesson 3: Understanding Debit and Credit</h1>
+</header>
 
-        <h2>What is Credit?</h2>
-        <p>A credit increases the value of liability, revenue, and equity accounts or decreases the value of asset and expense accounts.</p>
-        
-        <div>
-            <div class="toggle-button" onclick="toggleDescription('credit')">More on Credit</div>
-            <div id="credit" class="description">
-                <ul>
-                    <li><strong>Assets:</strong> Credits decrease the value of asset accounts.</li>
-                    <li><strong>Expenses:</strong> Credits decrease expense accounts.</li>
-                    <li><strong>Liabilities:</strong> Credits increase the value of liability accounts.</li>
-                    <li><strong>Revenue:</strong> Credits increase revenue accounts.</li>
-                    <li><strong>Equity:</strong> Credits increase equity accounts.</li>
-                </ul>
-            </div>
-        </div>
-    </main>
-    <!-- Navigation controls -->
-    <div class="navigation">
-        <button onclick="navigate(-1)">Back</button>
-        <button onclick="navigate(1)">Next</button>
-        <button onclick="exit()">Exit</button>
-    </div>
-    
-    <footer>
-        <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
-    </footer>
+<main>
+    <p>In accounting, a debit is an entry that increases asset or expense accounts and decreases liability, revenue, and equity accounts, while a credit is an entry that decreases asset or expense accounts and increases liability, revenue, and equity accounts.<br>
+        Together, debits and credits are used to ensure that the accounting equation remains balanced and accurately reflects financial transactions.
+    </p>
+    <h2 class="Table">Debit and Credit Table</h2>
+<table border="1">
+    <thead>
+        <tr>
+            <th colspan="3">Account Type and Transaction Impact</th>
+        </tr>
+        <tr>
+            <th>Account Type</th>
+            <th>Debit</th>
+            <th>Credit</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Assets</td>
+            <td style="color: green;">Increase</td>
+            <td style="color: red;">Decrease</td>
+        </tr>
+        <tr>
+            <td>Expenses</td>
+            <td style="color: green;">Increase</td>
+            <td style="color: red;">Decrease</td>
+        </tr>
+        <tr>
+            <td>Liabilities</td>
+            <td style="color: red;">Decrease</td>
+            <td style="color: green;">Increase</td>
+        </tr>
+        <tr>
+            <td>Revenue</td>
+            <td style="color: red;">Decrease</td>
+            <td style="color: green;">Increase</td>
+        </tr>
+        <tr>
+            <td>Equity</td>
+            <td style="color: red;">Decrease</td>
+            <td style="color: green;">Increase</td>
+        </tr>
+    </tbody>
+</table>
 
-    <script>
-        function toggleDescription(id) {
-            var desc = document.getElementById(id);
-            if (desc.style.display === "none" || desc.style.display === "") {
-                desc.style.display = "block";
-            } else {
-                desc.style.display = "none";
-            }
-        }
-        function navigate(direction) {
+
+<h2>What is Debit?</h2>
+<p>A debit increases the value of asset and expense accounts or decreases the value of liability, revenue, and equity accounts.</p>
+
+<ul>
+    <li>
+        <div class="toggle-button" onclick="toggleDescription('debit')" style="font-weight: bold; font-size: larger;">More on Debit</div>
+        <div id="debit" class="description" style="display: none;" >
+            <ul>
+                <li><strong>Assets:</strong> Debits increase the value of asset accounts.</li>
+                <li><strong>Expenses:</strong> Debits increase expense accounts.</li>
+                <li><strong>Liabilities:</strong> Debits decrease the value of liability accounts.</li>
+                <li><strong>Revenue:</strong> Debits decrease revenue accounts.</li>
+                <li><strong>Equity:</strong> Debits decrease equity accounts.</li>
+            </ul>
+        </div>
+    </li>
+</ul>
+
+<h2>What is Credit?</h2>
+<p>A credit increases the value of liability, revenue, and equity accounts or decreases the value of asset and expense accounts.</p>
+
+<ul>
+    <li>
+        <div class="toggle-button" onclick="toggleDescription('credit')" style="font-weight: bold; font-size: larger;">More on Credit</div>
+        <div id="credit" class="description" style="display: none;">
+            <ul>
+                <li><strong>Assets:</strong> Credits decrease the value of asset accounts.</li>
+                <li><strong>Expenses:</strong> Credits decrease expense accounts.</li>
+                <li><strong>Liabilities:</strong> Credits increase the value of liability accounts.</li>
+                <li><strong>Revenue:</strong> Credits increase revenue accounts.</li>
+                <li><strong>Equity:</strong> Credits increase equity accounts.</li>
+            </ul>
+        </div>
+    </li>
+</ul>
+
+    
+    
+</main>
+
+<!-- Navigation controls -->
+<div class="navigation">
+    <button onclick="navigate(-1)">Back</button>
+    <button onclick="navigate(1)">Next</button>
+    <button onclick="exit()">Exit</button>
+</div>
+
+<footer>
+    <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
+</footer>
+
+<script>
+    function toggleDescription(id) {
+        var desc = document.getElementById(id);
+        desc.style.display = (desc.style.display === "none" || desc.style.display === "") ? "block" : "none";
+    }
+
+    function navigate(direction) {
         const lessonNumber = parseInt(window.location.pathname.match(/lesson(\d+)/)[1]);
         const nextLessonNumber = lessonNumber + direction;
         if (nextLessonNumber >= 1 && nextLessonNumber <= 4) {
@@ -76,6 +123,26 @@
             window.location.href = "lesson_home";
         }
     }
-    </script>
-</body>
+</script>
+<style>
+    table {
+  border-collapse: collapse;
+  width: 90%; /* Reducing the table width slightly from 100% */
+  margin: auto; /* Center the table within its container */
+}
+
+table, td, th {  
+  border: 1px solid #ddd;
+  text-align: center; /* Center the text in the table */
+}
+
+th, td {
+  padding: 10px; /* Reduced padding to slightly decrease the table size */
+}
+
+.Table{
+    text-align: center;
+}
+
+</style>
 {% endblock %}

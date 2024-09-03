@@ -1,23 +1,30 @@
 {% extends "base.html" %}
 
 {% block body %}
-    <header>
-        <h1>Lesson 1: Budgeting Basics</h1>
-    </header>
+<header>
+    <h1>Lesson 1: Budgeting Basics</h1>
+</header>
+
+<main>
+    <h2>What is Budgeting?</h2>
+    <p>Budgeting involves tracking your income and expenses to manage your finances effectively.<br>
+        Start by listing all sources of income and categorize your expenses into needs and wants.<br>
+        Allocate funds accordingly and stick to your budget to avoid overspending.
+    </p>
+    <figure>
+        <img src="/static/NeedVSWants.jpg" alt="Budget_Idea" style="width: 50%; height: auto;">
+        <figcaption>Diagram of Needs vs Wants</figcaption>
+    </figure>
     
-    <main>
-        <h2>What is Budgeting?</h2>
-        <p>Budgeting involves tracking your income and expenses to manage your finances effectively.  <br>
-            Start by listing all sources of income and categorize your expenses into needs and wants. <br>
-            Allocate funds accordingly and stick to your budget to avoid overspending.</p>
-        
-        <img src="/static/NeedVSWants.jpg" alt="Budget_Idea">
-        
-        <h3>Understanding Needs and Wants</h3>
-        
-        <div>
-            <div class="toggle-button" onclick="toggleDescription('needs')">Needs</div>
-            <div id="needs" class="description">
+
+    <h3>Understanding Needs and Wants</h3>
+
+    <p>By clearly distinguishing between needs and wants, you can create a more effective budget that ensures you cover your essentials while making informed decisions about discretionary spending.</p>
+    
+    <ul>
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('needs')" style="font-weight: bold; font-size: larger;">Needs</div>
+            <div id="needs" class="description" style="display: none;">
                 <p>Needs are essential expenses that are necessary for survival and well-being. These include:</p>
                 <ul>
                     <li><strong>Housing:</strong> Rent or mortgage payments to provide a place to live.</li>
@@ -27,11 +34,11 @@
                     <li><strong>Transportation:</strong> Costs for getting to work or other essential places, such as public transport or car payments.</li>
                 </ul>
             </div>
-        </div>
-        
-        <div>
-            <div class="toggle-button" onclick="toggleDescription('wants')">Wants</div>
-            <div id="wants" class="description">
+        </li>
+
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('wants')" style="font-weight: bold; font-size: larger;">Wants</div>
+            <div id="wants" class="description" style="display: none;">
                 <p>Wants are non-essential expenses that enhance your lifestyle but are not necessary for survival. These include:</p>
                 <ul>
                     <li><strong>Dining Out:</strong> Eating at restaurants or ordering takeout.</li>
@@ -41,32 +48,30 @@
                     <li><strong>Vacations:</strong> Travel and leisure trips that are not essential for daily life.</li>
                 </ul>
             </div>
-        </div>
-        
-        <p>By clearly distinguishing between needs and wants, you can create a more effective budget that ensures you cover your essentials while making informed decisions about discretionary spending.</p>
-        <!-- Navigation controls -->
-        <div class="navigation">
-            <button onclick="navigate(-1)">Back</button>
-            <button onclick="navigate(1)">Next</button>
-            <button onclick="exit()">Exit</button>
-        </div>
-    </main>
+        </li>
+    </ul>
 
     
-    <footer>
-        <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
-    </footer>
+    
+    <!-- Navigation controls -->
+    <div class="navigation">
+        <button onclick="navigate(-1)">Back</button>
+        <button onclick="navigate(1)">Next</button>
+        <button onclick="exit()">Exit</button>
+    </div>
+</main>
 
-    <script>
-        function toggleDescription(id) {
-            var desc = document.getElementById(id);
-            if (desc.style.display === "none" || desc.style.display === "") {
-                desc.style.display = "block";
-            } else {
-                desc.style.display = "none";
-            }
-        }
-        function navigate(direction) {
+<footer>
+    <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
+</footer>
+
+<script>
+    function toggleDescription(id) {
+        var desc = document.getElementById(id);
+        desc.style.display = (desc.style.display === "none" || desc.style.display === "") ? "block" : "none";
+    }
+
+    function navigate(direction) {
         const lessonNumber = parseInt(window.location.pathname.match(/lesson(\d+)/)[1]);
         const nextLessonNumber = lessonNumber + direction;
         if (nextLessonNumber >= 1 && nextLessonNumber <= 4) {
@@ -76,12 +81,10 @@
         }
     }
 
-        function exit() {
+    function exit() {
         if (confirm("Are you sure you want to exit?")) {
             window.location.href = "lesson_home";
         }
     }
-        
-    </script>
-</body>
+</script>
 {% endblock %}
