@@ -1,24 +1,23 @@
-<!-- TODO: add home.html codes here -->
 {% extends "base.html" %}
 {% block body %}
 
 <section id="hero">
     <div class="hero container">
         <div>
-            {%if name_user%}
-            <h1>Hello {{ name_user }}, <span></span></h1>
-            {%else%}
-            <h1>Hello!</h1>
-            {%endif%}
-
-            <h1>Improve <span></span></h1>
-            <h1>Your financial literacy <span></span></h1>
             {% if name_user %}
-                <a href="/logout" type="button" class="cta">Log Out</a> 
+            <h1>Hello {{ name_user }}, <span></span></h1>
             {% else %}
-                <a href="/login" type="button" class="cta">Log in</a>
-                <br>
-                <a href="/signup" type="button" class="cta">Create your Account</a>
+            <h1>Hello!</h1>
+            {% endif %}
+
+            <h1>Empower <span></span></h1>
+            <h1>Your Financial <span id="dynamic-word-container"><span id="dynamic-word">Future</span></span></h1>
+            {% if name_user %}
+            <a href="/logout" type="button" class="cta">Log Out</a>
+            {% else %}
+            <a href="/login" type="button" class="cta">Log in</a>
+            <br>
+            <a href="/signup" type="button" class="cta">Create your Account</a>
             {% endif %}
         </div>
     </div>
@@ -30,4 +29,5 @@
 </section>
 
 <script src="..\static\js\home.js"></script>
+
 {% endblock body %}
