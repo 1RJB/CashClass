@@ -232,3 +232,52 @@ def sell_symbol(symbol):
     stocks = user.holdings
     print(user, stocks)
     return render_template("sell.html", stocks=stocks, symbol=escape(symbol))
+
+@investing.route("/history")
+@login_required
+def history():
+    """Show history of user's transactions"""
+
+    # Query database for all transactions made by current user
+    user = current_user
+    transactions = user.transactions
+
+    return render_template("history.html", transactions=transactions)
+
+
+@investing.route("/addcash", methods=["GET", "POST"])
+@login_required
+def addcash():
+    """Add cash to user's account"""
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # Validate cash amount was submitted
+        if not request.form.get("cash"):
+            return render_template("addcash.html", error="Must provide a cash amount to add to account"), 400
+
+        # Validate cash amount fits within bounds ($1-$10,000,000)
+        if not (request.form.get("cash").isdigit() and int(request.form.get("cash")) >= 1 and int(request.form.get("cash")) <= 10000000):
+            return render_template("addcash.html", error="Must provide valid cash amount to add (between $1 and $10,000,000)"), 400
+
+        # Validate account doesn't already have too much cash (> $10,000,000)
+        user = current_user
+
+        if (user.cash >= 10000000):
+            return render_template("addcash.html", error="Account already has too much cash ($10,000,000 or more)"), 400
+
+        # Validate account won't end up with too much cash (> $10,000,000)
+        if ((user.cash + int(request.form.get("cash"))) > 10000000):
+            return render_template("addcash.html", error="Amount entered would lead the account to have too much cash ($10,000,000 or more). Please enter a lower amount."), 400
+
+        user.cash += int(request.form.get("cash"))
+        db.session.commit()
+
+        flash("Cash amount added successfully")
+        return redirect("/portfolio")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        user = current_user
+        return render_template("addcash.html", cash=user.cash)
