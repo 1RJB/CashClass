@@ -1,17 +1,15 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends "base.html" %}
+{% block body %}
     <h1>Financial Literacy Quiz</h1>
     <form action="" method="post">
         {% if quiz %}
             <ul>
                 {% for question in quiz %}
                     <li>
-                        <strong>{{ question['question'] | safe }}</strong>
+                        <strong>{{ question['question'] }}</strong>
                         <ul>
-                            {% set options = question['incorrect_answers'] + [question['correct_answer']] | random %}
-                            {% for option in options %}
-                                <li>{{ option | safe }}</li>
+                            {% for option in question['options'] %}
+                                <li>{{ option }}</li>
                             {% endfor %}
                         </ul>
                     </li>
@@ -22,4 +20,4 @@
         {% endif %}
     </form>
     <button onclick="window.location.reload();">Refresh Quiz</button>
-{% endblock %}
+{% endblock body %}

@@ -11,7 +11,7 @@ from bokeh.plotting import figure, show, output_file
 from bokeh.embed import components 
 from bokeh.resources import CDN
 from .models import Flashcard
-import requests
+from transformers import pipeline
 
 @auth.route('/flashcards')
 @login_required
@@ -116,21 +116,50 @@ def logout():
     logout_user()
     return redirect(url_for('auth.home'))
 
-# Define the URL for the Open Trivia Database API
-QUIZ_API_URL = 'https://opentdb.com/api.php?amount=5&category=21&type=multiple'
+# Initialize Hugging Face pipeline
+generator = pipeline('text-generation', model='openai-community/gpt2')
 
 def get_quiz():
     try:
-        response = requests.get(QUIZ_API_URL)
-        response.raise_for_status()
-        data = response.json()
-        return data['results']
-    except requests.RequestException as e:
+        # Generate quiz text using the Hugging Face model
+        response = generator(
+            "Generate a quiz with 5 questions. The quiz aims to improve 18 to 24 year old's financial literacy. Each question should be followed by four multiple-choice options. Give in this format --> Q: <question goes here>? A: <Option 1 goes here> B: <Option 2 goes here> C: <Option 3 goes here> D: <Option 4 goes here>",
+            max_length=1024,
+            num_return_sequences=1,
+            truncation=True
+        )
+        quiz_text = response[0]['generated_text'].strip()
+        print("Generated Quiz Text:", quiz_text)  # Debugging line
+        # Parse the quiz data
+        quiz_data = parse_quiz_data(quiz_text)
+        print("Parsed Quiz Data:", quiz_data)  # Debugging line
+        return quiz_data
+    except Exception as e:
         print(f"Error fetching quiz data: {e}")
         return []
 
-@auth.route('/quizes')
-@login_required
+def parse_quiz_data(quiz_text):
+    lines = quiz_text.split('\n')
+    quiz = []
+    current_question = None
+
+    for line in lines:
+        line = line.strip()
+        if line:
+            if line.startswith('Q:'):
+                if current_question:
+                    quiz.append(current_question)
+                current_question = {'question': line[2:].strip(), 'options': []}
+            elif line.startswith(('A:', 'B:', 'C:', 'D:')):
+                if current_question:
+                    current_question['options'].append(line[2:].strip())
+    
+    if current_question:
+        quiz.append(current_question)
+    
+    return quiz
+
+@auth.route('/quiz')
 def quiz():
     quiz = get_quiz()
-    return render_template('quizes.html', quiz=quiz)
+    return render_template('quiz.html', quiz=quiz)
