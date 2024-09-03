@@ -57,3 +57,40 @@ def lookup(symbol):
 def usd(value):
     """Format value as USD."""
     return f"${value:,.2f}"
+
+def get_news(query, days=7, count=4):
+    """Get news articles based on query."""
+
+    # Make News API request
+    try:
+        api_key = os.getenv("NEWS_API_KEY")
+        date = (datetime.now() - timedelta(days=days)).strftime('%Y-%m-%d')
+        url = f"https://newsapi.org/v2/everything?q={urllib.parse.quote_plus(query)}&from={date}&sortBy=popularity&apiKey={api_key}"
+        response = requests.get(url)
+        response.raise_for_status()
+    except requests.RequestException:
+        return None
+
+    # Parse response
+    try:
+        response1 = response.json()
+        response2 = response1["articles"]
+        response3 = response2[:count] # Slice fisrt N elements of list 
+        articles = []
+        for item in response3:
+            # News API gives date and time: 2021-06-12T00:05:00Z
+            date = item["publishedAt"].replace("T", " ").replace("Z", "")
+
+            article = {
+                "source": item["source"]["name"],
+                "title": item["title"],
+                "description": item["description"],
+                "url": item["url"],
+                "url_to_image": item["urlToImage"],
+                "date": datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+            }          
+            articles.append(article)
+
+        return articles
+    except (KeyError, TypeError, ValueError):
+        return None
