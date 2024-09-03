@@ -172,3 +172,8 @@ def parse_quiz_data(quiz_text):
 def quiz():
     quiz = get_quiz()
     return render_template('quiz.html', quiz=quiz)
+
+@auth.route('/lesson_home.html')
+def lesson_main():
+    return render_template('lesson_home.html', lesson_main=lesson_main )
+
