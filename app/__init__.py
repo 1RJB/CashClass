@@ -1,13 +1,10 @@
 from flask import Flask
 from .config import Config
-# TODO: import flask_sqlalchemy
-# TODO: import flask_login
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
 from os import path
 from flask_sqlalchemy import SQLAlchemy
 from .utils import usd
-# TODO: declare sqlalchemy db here
 db = SQLAlchemy()
 csrf = CSRFProtect()
 
@@ -21,10 +18,8 @@ def create_app(config_class=Config):
     from .models import Users
 
     with app.app_context():
-        # TODO: initialise sqlalchemy db here
         db.init_app(app)
         
-        # TODO: create sqlalchemy db file
         if not path.exists(app.config['DATABASE_NAME']):
             db.create_all()
             print('Created Database!')
@@ -32,7 +27,6 @@ def create_app(config_class=Config):
         csrf.init_app(app)
 
 
-        # TODO: initialise loginmanager
         login_manager = LoginManager()
         login_manager.login_view = 'auth.login'
         login_manager.init_app(app)
