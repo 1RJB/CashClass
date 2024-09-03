@@ -172,5 +172,5 @@ def quiz():
 
 @auth.route('/lesson_home.html')
 def lesson_main():
-    lesson = get_lesson()
     return render_template('lesson_home.html', lesson_main=lesson_main )
+
