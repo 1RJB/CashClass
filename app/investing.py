@@ -2,7 +2,7 @@ import os
 from flask import Flask, Blueprint, flash, redirect, render_template, request, session
 from markupsafe import escape
 from datetime import datetime
-from .utils import lookup
+from .utils import lookup, get_news
 from flask_login import (
     current_user,
     login_required,
@@ -281,3 +281,109 @@ def addcash():
     else:
         user = current_user
         return render_template("addcash.html", cash=user.cash)
+    
+
+@investing.route("/reset", methods=["GET", "POST"])
+@login_required
+def reset():
+    """Reset user's account"""
+
+    # User reached route via POST (as by submitting a form via POST)
+    if request.method == "POST":
+
+        # Validate cash amount was submitted
+        if not request.form.get("cash"):
+            return render_template("reset.html", error="Must provide a cash amount to restart account with"), 400
+
+        # Validate starting cash amount fits within bounds
+        if not (request.form.get("cash").isdigit() and int(request.form.get("cash")) >= 100 and int(request.form.get("cash")) <= 10000000):
+            return render_template("register.html", error="Must provide valid starting cash amount (between $100 and $10,000,000)"), 400
+
+        user = current_user
+
+        user.cash = int(request.form.get("cash"))
+
+        # Iterate through and delete user's holdings
+        holdings = user.holdings
+        for holding in holdings:
+            db.session.delete(holding)
+
+        # Iterate through and delete user's transactions
+        transactions = user.transactions
+        for transaction in transactions:
+            db.session.delete(transaction)
+
+        db.session.commit()
+
+        flash("Account successfully reset")
+        return redirect("/portfolio")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("reset.html")
+    
+@investing.route("/quote", methods=["POST"])
+def quote():
+    """Get stock quote via form submission"""
+
+    # User reached route via POST (as by submitting a form via POST)
+    symbol = request.form.get("symbol")
+
+    # Validate length and alphabetical nature of symbol string
+    if not (len(symbol) <= 5 and symbol.isalpha()):
+        return render_template("index.html", error="Invalid symbol"), 400
+
+    return redirect("/quote/" + symbol)
+
+
+@investing.route("/quote/<string:stock_symbol>")
+def quote_symbol(stock_symbol):
+    """Get stock quote"""
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    # Get stock symbol from URL, escape user input to ensure safety
+    symbol = escape(stock_symbol)
+
+    # Validate length and alphabetical nature of symbol string
+    if not (len(symbol) <= 5 and symbol.isalpha()):
+        return render_template("index.html", error="Invalid symbol"), 400
+
+    quote = lookup(symbol)
+
+    if not quote:
+        return render_template("index.html", error="Invalid symbol"), 400
+
+    news_items = get_news(symbol)
+
+    # Check if user is logged in, then check if they own the stock
+    logged_in = False
+    user_holding = None
+    if not current_user.is_anonymous:
+        logged_in = True
+        user = current_user
+        holding = Holding.query.filter((Holding.user_id == user.email) & (Holding.symbol == quote["symbol"])).first()
+
+        if holding is not None:
+            value = holding.shares * float(quote["price"])
+            cost = 0
+
+            # Calculate cost of all portfolio transactions
+            # If sold stock, will subtract since shares in transaction will be negative
+            transactions = Transaction.query.filter((Transaction.user_id == user.email) & (Transaction.symbol == quote["symbol"])).all()
+
+            # Check if there are multiple transactions (have to check for single item when using filter)
+            if type(transactions) is list:
+                for transaction in transactions:
+                    cost += transaction.shares * transaction.price
+            # Otherwise, if transactions is not None, but not a list, must only be sinlge entry
+            elif transactions:
+                cost = transactions.shares * transactions.price
+
+            user_holding = {
+                "shares": holding.shares,
+                "cost": cost,
+                "value": value,
+                "gain_loss": value - cost
+            }
+
+    return render_template("quote.html", quote=quote, news_items=news_items, logged_in=logged_in, user_holding=user_holding)

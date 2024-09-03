@@ -6,6 +6,7 @@
     <div class="p-5 mb-4 bg-pt-dark2 rounded-3">
         <p>Current Cash: {{ cash | usd }}</p>
         <form action="/addcash" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             <div class="mb-3">
                 <label for="cash1" class="form-label">Amount of cash to add</label>
                 <input type="number" class="form-control" name="cash" id="cash1">
