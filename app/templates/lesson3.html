@@ -24,7 +24,8 @@
     </header>
     
     <main>
-        <p>In accounting, a debit is an entry that increases asset or expense accounts and decreases liability, revenue, and equity accounts, while a credit is an entry that decreases asset or expense accounts and increases liability, revenue, and equity accounts. Together, debits and credits are used to ensure that the accounting equation remains balanced and accurately reflects financial transactions.</p>
+        <p>In accounting, a debit is an entry that increases asset or expense accounts and decreases liability, revenue, and equity accounts, while a credit is an entry that decreases asset or expense accounts and increases liability, revenue, and equity accounts. <br>
+            Together, debits and credits are used to ensure that the accounting equation remains balanced and accurately reflects financial transactions.</p>
         
         <h2>What is Debit?</h2>
         <p>A debit increases the value of asset and expense accounts or decreases the value of liability, revenue, and equity accounts.</p>
@@ -58,6 +59,12 @@
             </div>
         </div>
     </main>
+    <!-- Navigation controls -->
+    <div class="navigation">
+        <button onclick="navigate(-1)">Back</button>
+        <button onclick="navigate(1)">Next</button>
+        <button onclick="exit()">Exit</button>
+    </div>
     
     <footer>
         <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
@@ -72,6 +79,21 @@
                 desc.style.display = "none";
             }
         }
+        function navigate(direction) {
+        const lessonNumber = parseInt(window.location.pathname.match(/lesson(\d+)/)[1]);
+        const nextLessonNumber = lessonNumber + direction;
+        if (nextLessonNumber >= 1 && nextLessonNumber <= 4) {
+            window.location.href = `lesson${nextLessonNumber}.html`;
+        } else if (nextLessonNumber > 4) {
+            window.location.href = "lesson_home.html";
+        }
+    }
+
+    function exit() {
+        if (confirm("Are you sure you want to exit?")) {
+            window.location.href = "lesson_home.html";
+        }
+    }
     </script>
 </body>
 </html>

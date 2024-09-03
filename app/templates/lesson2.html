@@ -56,6 +56,12 @@
             <figcaption>A visual representation of saving strategies.</figcaption>
         </figure>
     </main>
+    <!-- Navigation controls -->
+    <div class="navigation">
+        <button onclick="navigate(-1)">Back</button>
+        <button onclick="navigate(1)">Next</button>
+        <button onclick="exit()">Exit</button>
+    </div>
     
     <footer>
         <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
@@ -70,6 +76,21 @@
                 desc.style.display = "none";
             }
         }
+        function navigate(direction) {
+        const lessonNumber = parseInt(window.location.pathname.match(/lesson(\d+)/)[1]);
+        const nextLessonNumber = lessonNumber + direction;
+        if (nextLessonNumber >= 1 && nextLessonNumber <= 4) {
+            window.location.href = `lesson${nextLessonNumber}.html`;
+        } else if (nextLessonNumber > 4) {
+            window.location.href = "lesson_home.html";
+        }
+    }
+
+        function exit() {
+        if (confirm("Are you sure you want to exit?")) {
+            window.location.href = "lesson_home.html";
+        }
+    }
     </script>
 </body>
 </html>
