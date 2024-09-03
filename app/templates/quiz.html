@@ -4,11 +4,11 @@
     <form action="" method="post">
             <ul>
                 {% for question in quiz %}
-                    <li>
+                    <li value="1">
                         <strong>{{ question['question'] }}</strong>
                         <ul>
                             {% for option in question['options'] %}
-                                <li value="1">
+                                <li value="A">
                                     <label>
                                         <input type="radio" name="{{ question['id'] }}" value="{{ option }}">
                                         {{ option }}
