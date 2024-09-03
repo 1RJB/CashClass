@@ -12,37 +12,99 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h2 class="text-center mb-4">Flashcards</h2>
+        <h2 class="text-center mb-4">Financial Literacy Flashcards</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
         <div id="flashcard-container" class="d-flex justify-content-center">
-            <div class="flashcard">
+            <div class="flashcard" onclick="flipCard()">
                 <div class="card front">
-                    <div class="card-body">
-                        <h5 class="card-title">Question</h5>
-                        <p class="card-text"></p>
+                    <div class="card-body d-flex align-items-center justify-content-center text-center">
+                        <p class="card-text" id="flashcard-question"></p>
                     </div>
                 </div>
                 <div class="card back">
-                    <div class="card-body">
-                        <h5 class="card-title">Answer</h5>
-                        <p class="card-text"></p>
+                    <div class="card-body d-flex align-items-center justify-content-center text-center">
+                        <p class="card-text" id="flashcard-answer"></p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="text-center mt-3">
-            <button class="btn btn-secondary" onclick="prevCard()">Previous</button>
-            <button class="btn btn-primary" onclick="flipCard()">Flip</button>
-            <button class="btn btn-secondary" onclick="nextCard()">Next</button>
-            <button class="btn btn-info" onclick="shuffleCards()">Shuffle</button>
+
+        <div class="text-center mt-4">
+            <button class="btn btn-outline-primary mr-2" onclick="prevCard()">&laquo; Previous</button>
+            <button class="btn btn-outline-primary ml-2" onclick="nextCard()">Next &raquo;</button>
         </div>
+
         <div class="text-center mt-3">
             <p id="progress">Card 1 of {{ flashcards|length }}</p>
-            <div class="progress">
-                <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress mx-auto" style="width: 50%;">
+                <div id="progress-bar" class="progress-bar bg-primary" role="progressbar" style="width: 0%;"></div>
             </div>
         </div>
+
+        <div class="text-center mt-5">
+            <button class="btn btn-success" data-toggle="modal" data-target="#addFlashcardModal">Add New Flashcard</button>
+        </div>
+
+        <!-- Add Flashcard Modal -->
+        <div class="modal fade" id="addFlashcardModal" tabindex="-1" role="dialog" aria-labelledby="addFlashcardModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <form method="POST" action="{{ url_for('auth.add_flashcard') }}">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="addFlashcardModalLabel">Add New Flashcard</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <label for="question">Question</label>
+                    <textarea class="form-control" id="question" name="question" rows="3" required></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="answer">Answer</label>
+                    <textarea class="form-control" id="answer" name="answer" rows="3" required></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="category">Category (Optional)</label>
+                    <input type="text" class="form-control" id="category" name="category">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Add Flashcard</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
     </div>
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <!-- Scripts -->
+    <script>
+        let currentCard = 0;
+        const flashcards = JSON.parse('{{ flashcards|tojson|safe }}');
+    
+        // Rest of the script...
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
 {% endblock %}

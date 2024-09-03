@@ -12,6 +12,7 @@ class Users(db.Model, UserMixin):
     expenses = db.relationship('Expenses', backref='users')
     holdings = db.relationship("Holding", backref="users", lazy=True)
     transactions = db.relationship("Transaction", backref="users", lazy=True)
+    flashcards = db.relationship("Flashcard", backref="users", lazy=True)
 
 
 class Holding(db.Model):
@@ -47,12 +48,16 @@ class Expenses(db.Model):
     user = db.Column(db.String(100), db.ForeignKey('users.email'), nullable=False)
 
 class Flashcard(db.Model):
-    __tablename__ = "flashcards"
-
     id = db.Column(db.Integer, primary_key=True)
-    question = db.Column(db.String(500), nullable=False)
-    answer = db.Column(db.String(500), nullable=False)
-    user_id = db.Column(db.String(100), db.ForeignKey("users.email"), nullable=False)
+    question = db.Column(db.String(255), nullable=False)
+    answer = db.Column(db.String(255), nullable=False)
+    category = db.Column(db.String(50), nullable=True)
+    user_id = db.Column(db.String(255), db.ForeignKey('user.email'))
 
-    def __repr__(self):
-        return "<Flashcard %r>" % self.question
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'question': self.question,
+            'answer': self.answer,
+            'category': self.category
+        }

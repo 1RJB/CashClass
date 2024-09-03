@@ -1,3 +1,4 @@
+import json
 from flask import Blueprint, flash, render_template, request, url_for, redirect
 from . import db
 from .models import Users
@@ -12,6 +13,9 @@ from bokeh.embed import components
 from bokeh.resources import CDN
 from .models import Flashcard
 import anthropic
+import random
+
+auth = Blueprint('auth', __name__)
 
 @auth.route('/flashcards')
 @login_required
@@ -19,8 +23,34 @@ def flashcards():
     # Query the database for flashcards belonging to the current user
     user_flashcards = Flashcard.query.filter_by(user_id=current_user.email).all()
     
+    # Convert flashcards to a list of dictionaries
+    flashcards_data = [flashcard.to_dict() for flashcard in user_flashcards]
+    
     # Render the template with the flashcards
-    return render_template('flashcards.html', flashcards=user_flashcards)
+    return render_template('flashcards.html', flashcards=flashcards_data)
+
+
+@auth.route('/add_flashcard', methods=['GET', 'POST'])
+@login_required
+def add_flashcard():
+    if request.method == 'POST':
+        question = request.form.get('question')
+        answer = request.form.get('answer')
+        category = request.form.get('category')
+        
+        new_flashcard = Flashcard(
+            question=question,
+            answer=answer,
+            category=category,
+            user_id=current_user.email
+        )
+        db.session.add(new_flashcard)
+        db.session.commit()
+        flash('Flashcard added successfully!', 'success')
+        return redirect(url_for('auth.flashcards'))
+    
+    return render_template('add_flashcard.html')
+
 
 @auth.route('/lesson_home')
 @login_required
@@ -135,7 +165,7 @@ def get_quiz():
             messages=[
                 {
                     "role": "user",
-                    "content": "Give 5 mcq questions. The quiz aims to improve 18 to 24 year old's financial literacy. Each question should be followed by four multiple-choice options. Give the questions in this format: Q: <question goes here>? A: <Option 1 goes here> B: <Option 2 goes here> C: <Option 3 goes here> D: <Option 4 goes here>"
+                    "content": 'DO NOT RESPOND IN ANYTHING OTHER THAN JSON FORMAT. JUST GIVE ME THE JSON RESPONSE. Give 5 multiple choice questions for my quiz. The quiz aims to improve a regularly financial illiterate 18 to 24 year old in Singapore\'s financial literacy. Each question should be followed by four multiple-choice options. Give the questions in this format, using double quotes: { "1": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>" } }, "2": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>" } } }'
                 }
             ]
         )
@@ -151,22 +181,30 @@ def get_quiz():
         return []
 
 def parse_quiz_data(quiz_text):
-    lines = quiz_text.split('\n')
-    quiz = []
-    current_question = None
-    for line in lines:
-        line = line.strip()
-        if line:
-            if line.startswith('Q:'):
-                if current_question:
-                    quiz.append(current_question)
-                current_question = {'question': line[2:].strip(), 'options': []}
-            elif line.startswith(('A:', 'B:', 'C:', 'D:')):
-                if current_question:
-                    current_question['options'].append(line[2:].strip())
-    if current_question:
-        quiz.append(current_question)
-    return quiz
+    try:
+        # Remove any leading/trailing whitespace and newlines
+        quiz_text = quiz_text.strip()
+        
+        # If the text is wrapped in code blocks, remove them
+        if quiz_text.startswith("```") and quiz_text.endswith("```"):
+            quiz_text = quiz_text[3:-3].strip()
+        
+        # Parse the JSON-like string into a Python dictionary
+        quiz_dict = json.loads(quiz_text.replace("'", '"'))
+        
+        # Convert the dictionary into the desired format
+        quiz = []
+        for _, question_data in quiz_dict.items():
+            question = {
+                'question': question_data['question'],
+                'options': [question_data['answers'][key] for key in 'ABCD']
+            }
+            quiz.append(question)
+        
+        return quiz
+    except json.JSONDecodeError as e:
+        print(f"Error parsing quiz data: {e}")
+        return []
 
 @auth.route('/quiz')
 def quiz():
