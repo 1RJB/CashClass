@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lesson 4: Investing for the Future</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block body %}
     <header>
         <h1>Lesson 4: Investing for the Future</h1>
     </header>
@@ -14,7 +10,7 @@
         <p>Investing involves putting your money into assets like stocks, bonds, or real estate to grow wealth over time. <br>
              Start early, diversify your portfolio, and consider long-term goals such as retirement. <br>
              Understand the risks and choose investments that align with your financial objectives.</p>
-             <p>To learn more about stocks, check out this <a href="/plot" target="_blank">Link</a>.</p>
+             <p>To learn more about stocks, check out this <a href="plot" target="_blank">Link</a>.</p>
     </main>
     <!-- Navigation controls -->
 <div class="navigation">
@@ -32,17 +28,17 @@
             const lessonNumber = parseInt(window.location.pathname.match(/lesson(\d+)/)[1]);
             const nextLessonNumber = lessonNumber + direction;
             if (nextLessonNumber >= 1 && nextLessonNumber <= 4) {
-                window.location.href = `lesson${nextLessonNumber}.html`;
+                window.location.href = `lesson${nextLessonNumber}`;
             } else if (nextLessonNumber > 4) {
-                window.location.href = "lesson_home.html";
+                window.location.href = "lesson_home";
             }
         }
     
         function exit() {
             if (confirm("Are you sure you want to exit?")) {
-                window.location.href = "lesson_home.html";
+                window.location.href = "lesson_home";
             }
         }
     </script>
 </body>
-</html>
+{% endblock %}
