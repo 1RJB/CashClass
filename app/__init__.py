@@ -7,9 +7,6 @@ from flask_wtf.csrf import CSRFProtect
 from os import path
 from flask_sqlalchemy import SQLAlchemy
 from .utils import usd
-from flask.cli import with_appcontext
-import click
-from .models import db, Flashcard
 # TODO: declare sqlalchemy db here
 db = SQLAlchemy()
 csrf = CSRFProtect()
