@@ -12,7 +12,6 @@ class Users(db.Model, UserMixin):
     expenses = db.relationship('Expenses', backref='users')
     holdings = db.relationship("Holding", backref="users", lazy=True)
     transactions = db.relationship("Transaction", backref="users", lazy=True)
-    flashcards = db.relationship("Flashcard", backref="users", lazy=True)
 
 
 class Holding(db.Model):
