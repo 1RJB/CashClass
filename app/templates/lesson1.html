@@ -1,24 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesson 1: Budgeting Basics</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
-    <style>
-        .description {
-            display: none;
-            margin-left: 20px;
-        }
-        .toggle-button {
-            cursor: pointer;
-            color: #007bff;
-            text-decoration: underline;
-            margin: 10px 0;
-        }
-    </style>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block body %}
     <header>
         <h1>Lesson 1: Budgeting Basics</h1>
     </header>
@@ -29,7 +11,7 @@
             Start by listing all sources of income and categorize your expenses into needs and wants. <br>
             Allocate funds accordingly and stick to your budget to avoid overspending.</p>
         
-        <img src="../images/NeedVSWants.jpg" alt="Budget_Idea">
+        <img src="/static/NeedVSWants.jpg" alt="Budget_Idea">
         
         <h3>Understanding Needs and Wants</h3>
         
@@ -88,18 +70,18 @@
         const lessonNumber = parseInt(window.location.pathname.match(/lesson(\d+)/)[1]);
         const nextLessonNumber = lessonNumber + direction;
         if (nextLessonNumber >= 1 && nextLessonNumber <= 4) {
-            window.location.href = `lesson${nextLessonNumber}.html`;
+            window.location.href = `lesson${nextLessonNumber}`;
         } else if (nextLessonNumber > 4) {
-            window.location.href = "lesson_home.html";
+            window.location.href = "lesson_home";
         }
     }
 
         function exit() {
         if (confirm("Are you sure you want to exit?")) {
-            window.location.href = "lesson_home.html";
+            window.location.href = "lesson_home";
         }
     }
         
     </script>
 </body>
-</html>
+{% endblock %}
