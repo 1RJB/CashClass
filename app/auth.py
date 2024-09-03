@@ -22,6 +22,11 @@ def flashcards():
     # Render the template with the flashcards
     return render_template('flashcards.html', flashcards=user_flashcards)
 
+@auth.route('/lesson_home')
+@login_required
+def lesson_home():
+    return render_template('lesson_home.html')
+
 
 @auth.route('/plot')
 def plot():
