@@ -122,7 +122,7 @@ def logout():
     return redirect(url_for('auth.home'))
 
 # Initialize Hugging Face pipeline
-generator = pipeline('text-generation', model='EleutherAI/gpt-neo-1.3B')
+generator = pipeline('text-generation', model='microsoft/Phi-3.5-mini-instruct')
 # TODO: use claude / gpt4 api
 
 def get_quiz():
