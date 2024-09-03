@@ -54,22 +54,3 @@ def create_app(config_class=Config):
         app.register_blueprint(investing)
 
     return app
-
-
-def create_sample_flashcards():
-    sample_flashcards = [
-        {"question": "What is a budget?", "answer": "A plan for managing income and expenses.", "category": "Finance"},
-        {"question": "What is interest?", "answer": "The cost of borrowing money or the return on invested money.", "category": "Finance"},
-        {"question": "What is a savings account?", "answer": "A bank account that earns interest on the money deposited.", "category": "Banking"},
-    ]
-
-    for card in sample_flashcards:
-        new_card = Flashcard(
-            question=card['question'],
-            answer=card['answer'],
-            category=card['category'],
-            user_id="testuser@example.com"  # Replace with appropriate user_id
-        )
-        db.session.add(new_card)
-    db.session.commit()
-    click.echo("Sample flashcards added successfully!")
