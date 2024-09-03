@@ -118,12 +118,13 @@ def logout():
 
 # Initialize Hugging Face pipeline
 generator = pipeline('text-generation', model='openai-community/gpt2')
+# TODO: use claude / gpt4 api
 
 def get_quiz():
     try:
         # Generate quiz text using the Hugging Face model
         response = generator(
-            "Generate a quiz with 5 questions. The quiz aims to improve 18 to 24 year old's financial literacy. Each question should be followed by four multiple-choice options. Give in this format --> Q: <question goes here>? A: <Option 1 goes here> B: <Option 2 goes here> C: <Option 3 goes here> D: <Option 4 goes here>",
+            "Generate a quiz with 5 questions. The quiz aims to improve 18 to 24 year old's financial literacy. Each question should be followed by four multiple-choice options. Give the questions in this format: Q: <question goes here>? A: <Option 1 goes here> B: <Option 2 goes here> C: <Option 3 goes here> D: <Option 4 goes here>",
             max_length=1024,
             num_return_sequences=1,
             truncation=True
