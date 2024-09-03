@@ -11,7 +11,7 @@ from bokeh.plotting import figure, show, output_file
 from bokeh.embed import components 
 from bokeh.resources import CDN
 from .models import Flashcard
-from transformers import pipeline
+import anthropic
 
 @auth.route('/flashcards')
 @login_required
@@ -121,21 +121,27 @@ def logout():
     logout_user()
     return redirect(url_for('auth.home'))
 
-# Initialize Hugging Face pipeline
-generator = pipeline('text-generation', model='microsoft/Phi-3.5-mini-instruct')
-# TODO: use claude / gpt4 api
+import anthropic
+
+# Initialize Anthropic client
+client = anthropic.Anthropic()
 
 def get_quiz():
     try:
-        # Generate quiz text using the Hugging Face model
-        response = generator(
-            "Give 5 mcq questions. The quiz aims to improve 18 to 24 year old's financial literacy. Each question should be followed by four multiple-choice options. Give the questions in this format: Q: <question goes here>? A: <Option 1 goes here> B: <Option 2 goes here> C: <Option 3 goes here> D: <Option 4 goes here>",
-            max_length=1024,
-            num_return_sequences=1,
-            truncation=True
+        # Generate quiz text using the Anthropic API
+        response = client.messages.create(
+            model="claude-3-haiku-20240307",
+            max_tokens=1024,
+            messages=[
+                {
+                    "role": "user",
+                    "content": "Give 5 mcq questions. The quiz aims to improve 18 to 24 year old's financial literacy. Each question should be followed by four multiple-choice options. Give the questions in this format: Q: <question goes here>? A: <Option 1 goes here> B: <Option 2 goes here> C: <Option 3 goes here> D: <Option 4 goes here>"
+                }
+            ]
         )
-        quiz_text = response[0]['generated_text'].strip()
+        quiz_text = response.content[0].text.strip()
         print("Generated Quiz Text:", quiz_text)  # Debugging line
+        
         # Parse the quiz data
         quiz_data = parse_quiz_data(quiz_text)
         print("Parsed Quiz Data:", quiz_data)  # Debugging line
@@ -148,7 +154,6 @@ def parse_quiz_data(quiz_text):
     lines = quiz_text.split('\n')
     quiz = []
     current_question = None
-
     for line in lines:
         line = line.strip()
         if line:
@@ -159,10 +164,8 @@ def parse_quiz_data(quiz_text):
             elif line.startswith(('A:', 'B:', 'C:', 'D:')):
                 if current_question:
                     current_question['options'].append(line[2:].strip())
-    
     if current_question:
         quiz.append(current_question)
-    
     return quiz
 
 @auth.route('/quiz')
@@ -172,5 +175,8 @@ def quiz():
 
 @auth.route('/lesson_home.html')
 def lesson_main():
-    lesson = get_lesson()
     return render_template('lesson_home.html', lesson_main=lesson_main )
+
+@auth.route('/lesson1.html')
+def lesson1():
+    return render_template('lesson1.html', lesson1=lesson1)
