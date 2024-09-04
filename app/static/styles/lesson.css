@@ -1,63 +1,117 @@
-/* General Table Styles */
-table {
-    border-collapse: collapse;
-    width: 90%; /* Slightly reduced table width */
-    margin: auto; /* Center the table within its container */
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-table, td, th {  
-    border: 1px solid #ddd;
-    text-align: center; /* Center the text in the table */
-}
-
-th, td {
-    padding: 10px; /* Reduced padding to slightly decrease table size */
-}
-
-/* Specific Class Styles */
-.Table {
+/* Header and Footer */
+header, footer {
+    background: #333;
+    color: #fff;
+    padding: 10px 0;
     text-align: center;
 }
 
-/* Toggle Button Styles */
-.toggle-button {
-    font-weight: bold;
-    font-size: larger;
+header {
+    margin-bottom: 20px; /* Space below header */
 }
 
-/* Navigation Button Styles */
+footer {
+    margin-top: auto; /* Pushes footer to the bottom */
+    padding-top: 20px; /* Adds space between footer content and bottom of the page */
+    padding-bottom: 10px; /* Adds space inside the footer */
+    position: relative; /* Adjusts footer positioning */
+}
+
+/* Main Content Container */
+main {
+    padding: 20px;
+    margin: 0 auto; /* Centers the content */
+    max-width: 1200px; /* Increased width for more space */
+    flex: 1; /* Allows main to take up available space */
+}
+
+/* Navigation buttons */
 .navigation {
-    text-align: center;
     margin-top: 20px;
+    text-align: center;
 }
 
 .navigation button {
-    margin: 5px;
-    padding: 10px 20px;
     background-color: #4CAF50;
-    color: white;
     border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
     cursor: pointer;
+    border-radius: 4px; /* Rounded corners */
 }
 
 .navigation button:hover {
     background-color: #45a049;
 }
 
-/* Figure Styles */
-figure {
-    text-align: center;
-    margin: 20px auto;
-    width: 50%;
-}
-
-figure img {
+/* Table styling */
+table {
     width: 100%;
-    height: auto;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-figure figcaption {
-    font-size: 0.8em; /* Smaller but readable font size */
-    color: #555;
-    margin-top: 5px;
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Description toggle */
+.description {
+    display: none;
+    margin-top: 10px;
+}
+
+.toggle-button {
+    cursor: pointer;
+    color: #007BFF;
+    text-decoration: underline;
+    padding: 5px; /* Add padding to make the clickable area fit the text */
+    border: 1px solid transparent; /* Make sure the button area matches the text */
+    border-radius: 4px; /* Rounded corners for a more button-like appearance */
+    display: inline-block;
+    background-color: #f9f9f9; /* Slight background for better visibility */
+    font-weight: bold; 
+    font-size: larger;
+}
+
+.toggle-button:hover {
+    color: #0056b3;
+    background-color: #e9ecef; /* Change background on hover for better feedback */
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+/* Figcaption styling */
+figcaption {
+    font-size: 0.9em; /* Slightly smaller than the regular text */
+    color: #666; /* Optional: make it a bit lighter for less prominence */
 }

@@ -3,6 +3,7 @@
 {% block body %}
 <header>
     <h1>Lesson 1: Budgeting Basics</h1>
+    <link rel="stylesheet" href="../static/styles/lesson.css">
 </header>
 
 <main>
@@ -23,8 +24,8 @@
     
     <ul>
         <li>
-            <div class="toggle-button" onclick="toggleDescription('needs')" style="font-weight: bold; font-size: larger;">Needs</div>
-            <div id="needs" class="description" style="display: none;">
+            <div class="toggle-button" onclick="toggleDescription('needs')">Needs</div>
+            <div id="needs" class="description">
                 <p>Needs are essential expenses that are necessary for survival and well-being. These include:</p>
                 <ul>
                     <li><strong>Housing:</strong> Rent or mortgage payments to provide a place to live.</li>
@@ -37,8 +38,8 @@
         </li>
 
         <li>
-            <div class="toggle-button" onclick="toggleDescription('wants')" style="font-weight: bold; font-size: larger;">Wants</div>
-            <div id="wants" class="description" style="display: none;">
+            <div class="toggle-button" onclick="toggleDescription('wants')">Wants</div>
+            <div id="wants" class="description">
                 <p>Wants are non-essential expenses that enhance your lifestyle but are not necessary for survival. These include:</p>
                 <ul>
                     <li><strong>Dining Out:</strong> Eating at restaurants or ordering takeout.</li>
@@ -65,26 +66,5 @@
     <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
 </footer>
 
-<script>
-    function toggleDescription(id) {
-        var desc = document.getElementById(id);
-        desc.style.display = (desc.style.display === "none" || desc.style.display === "") ? "block" : "none";
-    }
-
-    function navigate(direction) {
-        const lessonNumber = parseInt(window.location.pathname.match(/lesson(\d+)/)[1]);
-        const nextLessonNumber = lessonNumber + direction;
-        if (nextLessonNumber >= 1 && nextLessonNumber <= 4) {
-            window.location.href = `lesson${nextLessonNumber}`;
-        } else if (nextLessonNumber > 4) {
-            window.location.href = "lesson_home";
-        }
-    }
-
-    function exit() {
-        if (confirm("Are you sure you want to exit?")) {
-            window.location.href = "lesson_home";
-        }
-    }
-</script>
+<script src="static/js/lesson.js"></script>
 {% endblock %}
