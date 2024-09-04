@@ -7,7 +7,9 @@ class Users(db.Model, UserMixin):
         return self.email
     email = db.Column(db.String(100), primary_key=True, unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
+    image_file = db.Column(db.String(20), nullable=False, default='default.png')  # Default image
     name = db.Column(db.String(20))
+    username = db.Column(db.String(20), nullable=False)
     cash = db.Column(db.Float, nullable=False, default=10000.00)
     expenses = db.relationship('Expenses', backref='users')
     holdings = db.relationship("Holding", backref="users", lazy=True)
