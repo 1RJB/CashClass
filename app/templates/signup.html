@@ -10,13 +10,26 @@
                 <p>Create a new account.</p>
             </div>
 
-            <form method='POST' action=''>
+            <!-- Add enctype for file upload -->
+            <form method="POST" action="" enctype="multipart/form-data">
                 {{ form.csrf_token }}
+
                 <div class="form-floating">
                     <label style="padding-left:30px;" for="floatingUsername">Username</label>
-                    {{ form.name }}
+                    {{ form.username }}
                 </div>
 
+                {% if form.username.errors %}
+                    {% for error in form.username.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="form-floating">
+                    <label style="padding-left:30px;" for="floatingName">Name</label>
+                    {{ form.name }}
+                </div>
+                    
                 {% if form.name.errors %}
                     {% for error in form.name.errors %}
                         <span>{{ error }}</span>
@@ -52,6 +65,18 @@
 
                 {% if form.confirm_password.errors %}
                     {% for error in form.confirm_password.errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Image file input -->
+                <div class="form-floating">
+                    <label style="padding-left:30px;" for="floatingImageFile">Profile Picture</label>
+                    {{ form.image_file }}
+                </div>
+
+                {% if form.image_file.errors %}
+                    {% for error in form.image_file.errors %}
                         <span>{{ error }}</span>
                     {% endfor %}
                 {% endif %}
