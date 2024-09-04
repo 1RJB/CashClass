@@ -6,7 +6,7 @@
     <li>
         <a href="{{ url_for('auth.quiz_submission', submission_id=submission.id) }}">
             Submitted on {{ submission.submitted_at }} - Score: {{ submission.score }}/{{
-            len(json.loads(submission.quiz_data)) }}
+            json.loads(submission.quiz_data)|length }}
         </a>
     </li>
     {% endfor %}
