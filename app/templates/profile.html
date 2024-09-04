@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/form.css') }}">
+
+<div class="signin-wrapper">
+    <div class="sign-panels">
+        <h1 class="signin-title">Your Profile</h1>
+        
+        <!-- Display User Details -->
+        <div class="profile-details">
+            <img src="{{ url_for('static', filename='profile_pics/' + (current_user.image_file if current_user.image_file else 'default.png')) }}" class="profile-img rounded-circle" alt="User Icon" style="width: 20rem; margin: 2rem 2rem 2rem;">
+            <h2>{{ current_user.name }}</h2>
+            <p>Username: {{ current_user.username }}</p>
+            <p>Name: {{current_user.name}}</p>
+            <p>Email: {{ current_user.email }}</p>
+            <p>Cash: {{ current_user.cash }}</p>
+            <p>Member since: {{ current_user.created_at }}</p>
+            <a href="{{ url_for('auth.edit_profile') }}" class="btn-signup">Edit Profile</a>
+        </div>
+        
+        <!-- Display Quiz Submissions -->
+        <div class="profile-quiz-submissions">
+            <h2 style="margin-top: 10px;">Quiz Submissions</h2>
+            {% if quiz_submissions|length == 0 %}
+            <p>No quiz submissions yet.</p>
+            {% endif %}
+            <ul>
+                {% for submission in quiz_submissions %}
+                <li>
+                    <a href="{{ url_for('auth.quiz_submission', submission_id=submission.id) }}">
+                        Submitted on {{ submission.submitted_at }} - Score: {{ submission.score }}/{{ json.loads(submission.quiz_data)|length }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
