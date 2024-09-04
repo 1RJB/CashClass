@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/form.css') }}">
+
+<div class="signin-wrapper">
+    <h1 class="signin-title" style="text-align: center; margin-top: 30px;">Your Profile</h1>
+    <div class="sign-panels">
+        <!-- Display User Details -->
+        <div class="profile-details">
+            <div class="profile-header">
+                <img src="{{ url_for('static', filename='profile_pics/' + (current_user.image_file if current_user.image_file else 'default.png')) }}"
+                    class="profile-img rounded-circle" alt="User Icon" style="width: 20rem; height: 20rem; object-fit: cover;"/>
+                <div class="profile-info">
+                    <h2>{{ current_user.name }}</h2>
+                    <p><strong>Username:</strong> {{ current_user.username }}</p>
+                    <p><strong>Name:</strong> {{current_user.name}}</p>
+                    <p><strong>Email:</strong> {{ current_user.email }}</p>
+                    <p><strong>Cash:</strong> {{ current_user.cash }}</p>
+                    <p><strong>Member Since:</strong> {{ current_user.created_at.strftime('%d/%m/%Y') }}</p>
+                </div>
+            </div>
+            <a href="{{ url_for('auth.edit_profile') }}" class="btn-signup">Edit Profile</a>
+        </div>
+    </div>
+</div>
+
+<!-- Display Quiz Submissions -->
+<div class="sign-panels">
+    <h2 class="submissions-title" style="margin-bottom: 30px;">Quiz Submissions</h2>
+    {% if quiz_submissions|length == 0 %}
+    <p>No quiz submissions yet.</p>
+    {% endif %}
+    <ol class="submission-list">
+        {% for submission in quiz_submissions %}
+        <li>
+            <a href="{{ url_for('auth.quiz_submission', submission_id=submission.id) }}">
+                Submitted on {{ submission.submitted_at.strftime('%d/%m/%Y %H:%M:%S') }} - Score: {{ submission.score }}/{{ json.loads(submission.quiz_data)|length }}
+            </a>
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+{% endblock %}

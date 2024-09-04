@@ -1,8 +1,9 @@
 import json
+from datetime import datetime
 from flask import Blueprint, flash, render_template, request, url_for, redirect, current_app
 from . import db
 from .models import Users
-from .forms import SignUp, Login
+from .forms import SignUp, Login, ProfileForm, EditProfileForm
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
@@ -62,7 +63,10 @@ def home():
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
     if current_user.is_active:
-        return redirect(url_for("views.show_expenses"))
+        return redirect(url_for("auth.home"))
+    
+    # created at
+    created_at = datetime.now()
 
     form = SignUp()
     if form.validate_on_submit():
@@ -84,7 +88,8 @@ def signup():
             name=name,
             email=form.email.data.lower(),
             password=generate_password_hash(form.password.data),
-            image_file=filename  # Save the filename to the database
+            image_file=filename,  # Save the filename to the database
+            created_at=created_at
         )
         db.session.add(new_user)
         db.session.commit()
@@ -123,6 +128,60 @@ def login():
 
     return render_template('login.html', form=form)
 
+@auth.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+    form = ProfileForm(obj=current_user)
+    
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        if form.password.data:
+            current_user.password = generate_password_hash(form.password.data)
+        db.session.commit()
+        flash('Profile updated successfully!', 'success')
+        return redirect(url_for('auth.profile'))
+    
+    # Quiz submissions
+    quiz_submissions = QuizSubmission.query.filter_by(user_id=current_user.email).all()
+
+    return render_template('profile.html', form=form, quiz_submissions=quiz_submissions, json=json)
+
+@auth.route('/profile/edit', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            current_user.username = form.username.data
+            current_user.name = form.name.data
+            current_user.email = form.email.data
+            
+            # Update password if provided
+            if form.password.data:
+                current_user.password = generate_password_hash(form.password.data)
+                
+            if form.image_file.data:
+                image_file = form.image_file.data
+                filename = secure_filename(image_file.filename)
+                image_path = os.path.join(current_app.root_path, 'static/profile_pics', filename)
+                image_file.save(image_path)
+                current_user.image_file = filename
+                
+            db.session.commit()
+            flash('Profile updated successfully!', 'success')
+            return redirect(url_for('auth.profile'))
+        else:
+            flash('Error updating profile. Please check your input.', 'error')
+
+    # Pre-fill the form with current user details
+    form.username.data = current_user.username
+    form.name.data = current_user.name
+    form.email.data = current_user.email
+
+    return render_template('edit_profile.html', form=form)
+
 @auth.route('/logout')
 @login_required
 def logout():
@@ -143,7 +202,7 @@ def get_quiz():
             messages=[
                 {
                     "role": "user",
-                    "content": 'DO NOT EVER RESPOND IN ANYTHING OTHER THAN JSON FORMAT. JUST GIVE ME IN THE JSON RESPONSE. Give 5 multiple choice questions for my quiz. The quiz aims to improve a regularly financial illiterate 18 to 24 year old in Singapore\'s financial literacy. Each question should be followed by four multiple-choice options. Give the questions in JSON format only, using double quotes in JSON FORMAT: { "1": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>" }, "answer": "A" }, "2": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>", }, "answer": "B" } }\n MAKE SURE ALWAYS ANSWER IN JSON FORMAT'
+                    "content": 'You only can output in json format from now on! DO NOT EVER RESPOND IN ANYTHING OTHER THAN JSON FORMAT. JUST GIVE ME IN THE JSON RESPONSE. Give 5 multiple choice questions for my quiz. The quiz aims to improve a regularly financial illiterate 18 to 24 year old in Singapore\'s financial literacy. Each question should be followed by four multiple-choice options. Give the questions in JSON format only, using double quotes and commas in JSON FORMAT: { "1": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>" }, "answer": "A" }, "2": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>", }, "answer": "B" } }\n MAKE SURE ALWAYS ANSWER IN JSON FORMAT, Also never forget to put commas in the JSON FORMAT'
                 }
             ]
         )
@@ -206,6 +265,8 @@ def quiz():
             if question['is_correct']:
                 correct_count += 1
 
+        flash(f"You got {correct_count} out of {len(quiz)} correct!", "success")
+
         # Save the quiz submission
         quiz_submission = QuizSubmission(
             user_id=current_user.email,
@@ -214,8 +275,6 @@ def quiz():
         )
         db.session.add(quiz_submission)
         db.session.commit()
-
-        flash(f"You got {correct_count} out of {len(quiz)} correct!", "success")
 
     return render_template('quiz.html', quiz=quiz)
 

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles/form.css') }}">
+
+<div class="signin-wrapper">
+    <div class="sign-panels">
+        <h1 class="signin-title">Edit Profile</h1>
+        <form method="POST" action="" enctype="multipart/form-data">
+            {{ form.csrf_token }}
+            
+            <!-- Image Preview Section -->
+            <div class="profile-details">
+                <img id="image_preview" src="{{ url_for('static', filename='profile_pics/' + (form.image_file.data.filename if form.image_file.data else current_user.image_file if current_user.image_file else 'default.png')) }}" alt="Profile Picture" class="profile-img rounded-circle" style="width: 20rem; height: 20rem; margin: 2rem 2rem 2rem;"/>
+                <div class="form-group">
+                    <label for="image_file">Profile Picture</label>
+                    {{ form.image_file() }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                {{ form.username() }}
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                {{ form.name() }}
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                {{ form.email() }}
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                {{ form.password() }}
+            </div>
+            <button type="submit" class="btn-signup">Save Changes</button>
+            {% for error in form.errors.values() %}
+            <div class="form-errors">
+                {% for e in error %}
+                <p>{{ e }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('image_file').addEventListener('change', function(event) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('image_preview').src = e.target.result;
+        }
+        reader.readAsDataURL(this.files[0]);
+    });
+</script>
+
+{% endblock %}

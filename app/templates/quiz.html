@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
-    <h1 style="margin-top: 3px;">Financial Literacy Quiz</h1>
+    <h1 style="margin-top: 5px; margin-bottom: 10px; margin-left: 10px;">A Financial Literacy Quiz</h1>
+    <p style="margin-left: 10px;">Hi {{current_user.name }}! Would you like to take to a quiz to check how Financially Literate you are?</p>
     <link rel="stylesheet" href="../static/styles/quiz.css">
     <form action="/quiz" method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
