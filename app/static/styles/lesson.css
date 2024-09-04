@@ -1,0 +1,63 @@
+/* General Table Styles */
+table {
+    border-collapse: collapse;
+    width: 90%; /* Slightly reduced table width */
+    margin: auto; /* Center the table within its container */
+}
+
+table, td, th {  
+    border: 1px solid #ddd;
+    text-align: center; /* Center the text in the table */
+}
+
+th, td {
+    padding: 10px; /* Reduced padding to slightly decrease table size */
+}
+
+/* Specific Class Styles */
+.Table {
+    text-align: center;
+}
+
+/* Toggle Button Styles */
+.toggle-button {
+    font-weight: bold;
+    font-size: larger;
+}
+
+/* Navigation Button Styles */
+.navigation {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.navigation button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.navigation button:hover {
+    background-color: #45a049;
+}
+
+/* Figure Styles */
+figure {
+    text-align: center;
+    margin: 20px auto;
+    width: 50%;
+}
+
+figure img {
+    width: 100%;
+    height: auto;
+}
+
+figure figcaption {
+    font-size: 0.8em; /* Smaller but readable font size */
+    color: #555;
+    margin-top: 5px;
+}
