@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, HiddenField, SelectField, FloatField, HiddenField, PasswordField
+from wtforms import StringField, SubmitField, HiddenField, SelectField, FloatField, HiddenField, PasswordField, FileField
 from wtforms.fields import EmailField, DateField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError, Optional
 from .models import Users
@@ -7,14 +7,16 @@ import re
 
 
 class Login(FlaskForm):
-    email = EmailField('Email', validators=[DataRequired(), Email(message='Invalid Email')]) 
+    username_or_email = StringField('Username or Email', validators=[DataRequired()]) 
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Log In')
 
 
 class SignUp(FlaskForm):
-    name = StringField('First Name', validators=[Optional(), Length(min=2, max=20)]) 
-    email = EmailField('Email*', validators=[DataRequired(), Email(message='Invalid Email')]) 
+    username = StringField('Username*', validators=[DataRequired(), Length(min=2, max=20)])
+    name = StringField('Name', validators=[Optional(), Length(min=2, max=20)]) 
+    email = EmailField('Email*', validators=[DataRequired(), Email(message='Invalid Email')])
+    image_file = FileField('Profile Picture')  # Optional image file field
     password = PasswordField('Password*', validators=[DataRequired(), Length(min=8, max=24)])
     confirm_password = PasswordField('Confirm Password*', validators=[DataRequired(), EqualTo(fieldname="password", message="Passwords must match")])
     submit = SubmitField('Sign Up')
