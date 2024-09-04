@@ -109,3 +109,9 @@ th {
         height: auto;
     }
 }
+
+/* Figcaption styling */
+figcaption {
+    font-size: 0.9em; /* Slightly smaller than the regular text */
+    color: #666; /* Optional: make it a bit lighter for less prominence */
+}
