@@ -141,8 +141,11 @@ def profile():
         db.session.commit()
         flash('Profile updated successfully!', 'success')
         return redirect(url_for('auth.profile'))
+    
+    # Quiz submissions
+    quiz_submissions = QuizSubmission.query.filter_by(user_id=current_user.email).all()
 
-    return render_template('profile.html', form=form)
+    return render_template('profile.html', form=form, quiz_submissions=quiz_submissions, json=json)
 
 @auth.route('/profile/edit', methods=['GET', 'POST'])
 @login_required
@@ -199,7 +202,7 @@ def get_quiz():
             messages=[
                 {
                     "role": "user",
-                    "content": 'DO NOT EVER RESPOND IN ANYTHING OTHER THAN JSON FORMAT. JUST GIVE ME IN THE JSON RESPONSE. Give 5 multiple choice questions for my quiz. The quiz aims to improve a regularly financial illiterate 18 to 24 year old in Singapore\'s financial literacy. Each question should be followed by four multiple-choice options. Give the questions in JSON format only, using double quotes in JSON FORMAT: { "1": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>" }, "answer": "A" }, "2": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>", }, "answer": "B" } }\n MAKE SURE ALWAYS ANSWER IN JSON FORMAT'
+                    "content": 'You only can output in json format from now on! DO NOT EVER RESPOND IN ANYTHING OTHER THAN JSON FORMAT. JUST GIVE ME IN THE JSON RESPONSE. Give 5 multiple choice questions for my quiz. The quiz aims to improve a regularly financial illiterate 18 to 24 year old in Singapore\'s financial literacy. Each question should be followed by four multiple-choice options. Give the questions in JSON format only, using double quotes and commas in JSON FORMAT: { "1": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>" }, "answer": "A" }, "2": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>", }, "answer": "B" } }\n MAKE SURE ALWAYS ANSWER IN JSON FORMAT, Also never forget to put commas in the JSON FORMAT'
                 }
             ]
         )
@@ -262,6 +265,8 @@ def quiz():
             if question['is_correct']:
                 correct_count += 1
 
+        flash(f"You got {correct_count} out of {len(quiz)} correct!", "success")
+
         # Save the quiz submission
         quiz_submission = QuizSubmission(
             user_id=current_user.email,
@@ -270,8 +275,6 @@ def quiz():
         )
         db.session.add(quiz_submission)
         db.session.commit()
-
-        flash(f"You got {correct_count} out of {len(quiz)} correct!", "success")
 
     return render_template('quiz.html', quiz=quiz)
 
