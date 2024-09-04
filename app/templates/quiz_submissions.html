@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body %}
+<h1>Your Quiz Submissions</h1>
+<ul>
+    {% for submission in submissions %}
+    <li>
+        <a href="{{ url_for('auth.quiz_submission', submission_id=submission.id) }}">
+            Submitted on {{ submission.submitted_at }} - Score: {{ submission.score }}/{{
+            len(json.loads(submission.quiz_data)) }}
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
