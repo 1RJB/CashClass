@@ -1,10 +1,12 @@
 import json
-from flask import Blueprint, flash, render_template, request, url_for, redirect
+from flask import Blueprint, flash, render_template, request, url_for, redirect, current_app
 from . import db
 from .models import Users
 from .forms import SignUp, Login
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+import os
 auth = Blueprint('auth', __name__)
 from .models import Flashcard
 from .models import QuizSubmission
@@ -57,16 +59,33 @@ def home():
         return render_template("home.html", name_user=current_user.name)
     return render_template("home.html")
 
-@auth.route('/signup', methods=['GET','POST'])
+@auth.route('/signup', methods=['GET', 'POST'])
 def signup():
-    # insert code here
     if current_user.is_active:
         return redirect(url_for("views.show_expenses"))
 
-    form = SignUp(request.form)
+    form = SignUp()
     if form.validate_on_submit():
         name = form.name.data.strip() if form.name.data.strip() else ''
-        new_user = Users(name=name, email=form.email.data.lower(), password=generate_password_hash(form.password.data))
+        
+        # Handle the image file
+        if form.image_file.data:
+            image_file = form.image_file.data
+            filename = secure_filename(image_file.filename)
+            image_path = os.path.join(current_app.root_path, 'static/profile_pics', filename)
+            image_file.save(image_path)
+        else:
+            # Use a default image if no file is uploaded
+            filename = 'default.png'
+
+        # Create a new user with the image file
+        new_user = Users(
+            username=form.username.data,
+            name=name,
+            email=form.email.data.lower(),
+            password=generate_password_hash(form.password.data),
+            image_file=filename  # Save the filename to the database
+        )
         db.session.add(new_user)
         db.session.commit()
 
@@ -75,27 +94,32 @@ def signup():
 
     return render_template("signup.html", form=form)
 
-
-@auth.route('/login', methods=['GET','POST'])
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
-    # insert code here
     if current_user.is_active:
-        return redirect(url_for("views.show_expenses"))
+        return redirect(url_for("auth.home"))
 
     form = Login(request.form)
     if form.validate_on_submit():
-        user = Users.query.filter_by(email=form.email.data.lower()).first()
+        # Check if the input is an email or username
+        user_input = form.username_or_email.data.lower()
+        user = None
 
-        if user:
-            if check_password_hash(user.password, form.password.data):
-                flash('Logged in successfully', category='success')
-                login_user(user, remember=True)
-                return redirect(url_for('views.show_expenses'))
-        
-            else:
-                flash('Incorrect password, please try again.', category='error')
+        # Try to get the user by email
+        if '@' in user_input:
+            user = Users.query.filter_by(email=user_input).first()
         else:
-            flash('No account with that email address.', category='error')
+            # Otherwise, try to get the user by username
+            user = Users.query.filter_by(username=user_input).first()
+
+        if user and check_password_hash(user.password, form.password.data):
+            flash('Logged in successfully', category='success')
+            login_user(user, remember=True)
+            return redirect(url_for('views.show_expenses'))
+        elif user:
+            flash('Incorrect password, please try again.', category='error')
+        else:
+            flash('No account with that username or email address.', category='error')
 
     return render_template('login.html', form=form)
 
