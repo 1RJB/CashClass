@@ -18,3 +18,22 @@ function exit() {
         window.location.href = "lesson_home";
     }
 }
+
+function adjustButtons() {
+    const lessonNumber = parseInt(window.location.pathname.match(/lesson(\d+)/)[1]);
+
+    const prevButton = document.querySelector(".navigation button:first-child");
+    const nextButton = document.querySelector(".navigation button:nth-child(2)");
+
+    // Remove "Back" button if on lesson 1
+    if (lessonNumber === 1) {
+        prevButton.style.display = "none";
+    }
+
+    // Change "Next" button to "Finish" if on lesson 4
+    if (lessonNumber === 4) {
+        nextButton.textContent = "Finish";
+    }
+}
+
+window.onload = adjustButtons;
