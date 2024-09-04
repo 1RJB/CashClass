@@ -60,3 +60,13 @@ class Flashcard(db.Model):
             'answer': self.answer,
             'category': self.category
         }
+
+class QuizSubmission(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(100), db.ForeignKey('users.email'), nullable=False)
+    quiz_data = db.Column(db.Text, nullable=False)  # Store the quiz questions and answers as JSON
+    score = db.Column(db.Integer, nullable=False)  # Store the user's score
+    submitted_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<QuizSubmission {self.id}>'
