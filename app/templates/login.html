@@ -8,27 +8,27 @@
                 <span>Sign In</span>
                 <p>Welcome back, please login to your account</p>
             </div>
-
             <form method='POST' action=''>
                 {{ form.csrf_token }}
                 <div class="form-floating mb-3">
-                    <label style="padding-left:30px;" for="floatingInput">Email address</label>
-                    {{ form.email }} 
+                    <label style="padding-left:30px;" for="floatingInput">Username or Email</label>
+                    {{ form.username_or_email }}
                 </div>
                 <div class="form-floating">
                     <label style="padding-left:30px;" for="floatingPassword">Password</label>
-                    {{ form.password }} 
+                    {{ form.password }}
                 </div>
                 <input type="checkbox" id="signin-checkbox">
                 <label for="signin-checkbox">Keep me signed in</label>
                 <button type="submit" href="#" class="btn-signin">Sign In</button>
 
-                {% if form.email.errors %}
-                    {% for error in form.email.errors %}
-                        <span>{{ error }}</span>
-                    {% endfor %}
+                {% if form.username_or_email.errors %}
+                {% for error in form.username_or_email.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
                 {% endif %}
-                <a href="/signup" class="btn-member btn-fade">Not a member yet? Sign Up now! <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                <a href="/signup" class="btn-member btn-fade">Not a member yet? Sign Up now! <i
+                        class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
             </form>
         </div>
     </div>

@@ -49,5 +49,17 @@
 
       {% endif %}
     </ul>
+
+    <!-- User icon and username -->
+    {% if current_user.is_authenticated %}
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/profile">
+          <img src="{{ url_for('static', filename='profile_pics/' + (current_user.image_file if current_user.image_file else 'default.png')) }}" class="rounded-circle" alt="User Icon" style="width: 30px;">
+          {{ current_user.username }}
+        </a>
+      </li>
+    </ul>
+    {% endif %}
   </div>
 </nav>
