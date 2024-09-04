@@ -14,6 +14,8 @@ class Users(db.Model, UserMixin):
     expenses = db.relationship('Expenses', backref='users')
     holdings = db.relationship("Holding", backref="users", lazy=True)
     transactions = db.relationship("Transaction", backref="users", lazy=True)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    
 
 
 class Holding(db.Model):
