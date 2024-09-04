@@ -7,6 +7,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 auth = Blueprint('auth', __name__)
 from .models import Flashcard
+from .models import QuizSubmission
 
 auth = Blueprint('auth', __name__)
 
@@ -170,11 +171,9 @@ def quiz():
     quiz = get_quiz()  # Retrieve or generate the quiz
     
     if request.method == 'POST':
-        # Get the user's answers from the form
         user_answers = request.form.to_dict()
-
-        # Validate the answers and store results
         correct_count = 0
+
         for question in quiz:
             question_id = question['id']
             selected_answer = user_answers.get(str(question_id))
@@ -183,14 +182,35 @@ def quiz():
             if question['is_correct']:
                 correct_count += 1
 
-        # Optionally, you could flash a message or pass the score to the template
+        # Save the quiz submission
+        quiz_submission = QuizSubmission(
+            user_id=current_user.email,
+            quiz_data=json.dumps(quiz),  # Serialize the quiz data as JSON
+            score=correct_count
+        )
+        db.session.add(quiz_submission)
+        db.session.commit()
+
         flash(f"You got {correct_count} out of {len(quiz)} correct!", "success")
 
     return render_template('quiz.html', quiz=quiz)
 
-@auth.route('/lesson_home')
-def lesson_main():
-    return render_template('lesson_home', lesson_main=lesson_main )
+@auth.route('/quiz_submissions')
+@login_required
+def quiz_submissions():
+    submissions = QuizSubmission.query.filter_by(user_id=current_user.email).all()
+    return render_template('quiz_submissions.html', submissions=submissions, json=json)
+
+@auth.route('/quiz_submission/<int:submission_id>')
+@login_required
+def quiz_submission(submission_id):
+    submission = QuizSubmission.query.get_or_404(submission_id)
+    if submission.user_id != current_user.email:
+        flash("You are not authorized to view this quiz submission.", "error")
+        return redirect(url_for('auth.quiz_submissions'))
+
+    quiz = json.loads(submission.quiz_data)  # Deserialize the quiz data from JSON
+    return render_template('quiz_submission.html', quiz=quiz, score=submission.score, submitted_at=submission.submitted_at)
 
 @auth.route('/lesson1')
 def lesson1():
