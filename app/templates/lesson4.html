@@ -1,45 +1,105 @@
 {% extends "base.html" %}
 
 {% block body %}
-    <header>
-        <h1>Lesson 4: Investing for the Future</h1>
-    </header>
-    
-    <main>
-        <h2>Why Invest?</h2>
-        <p>Investing involves putting your money into assets like stocks, bonds, or real estate to grow wealth over time. <br>
-             Start early, diversify your portfolio, and consider long-term goals such as retirement. <br>
-             Understand the risks and choose investments that align with your financial objectives.</p>
-        <p>To learn more about stocks, check out this <a href="plot" target="_blank">Link</a>.</p>
-         <!-- Navigation controls -->
-             <div class="navigation">
-                <button onclick="navigate(-1)">Back</button>
-                <button onclick="navigate(1)">Next</button>
-                <button onclick="exit()">Exit</button>
+<header>
+    <h1>Lesson 4: Investing for the Future</h1>
+    <link rel="stylesheet" href="../static/styles/lesson.css">
+</header>
+
+<main>
+    <h2>Why Invest?</h2>
+    <p>Investing involves putting your money into assets like stocks, bonds, or real estate to grow wealth over time. <br>
+       Start early, diversify your portfolio, and consider long-term goals such as retirement. <br>
+       Understand the risks and choose investments that align with your financial objectives.</p>
+
+    <h3>Types of Investments</h3>
+    <ul>
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('desc1')">Stocks</div>
+            <div id="desc1" class="description">
+                <p>Stocks represent ownership in a company. When you buy a stock, you are purchasing a small part of that company.<br>
+                   Stocks can offer high returns but come with higher risk compared to other investments. Research and select companies with strong growth potential and solid financials.<br>
+                   Consider both growth stocks and dividend stocks to balance potential returns and income.</p>
             </div>
-    </main>
+        </li>
 
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('desc2')">Bonds</div>
+            <div id="desc2" class="description">
+                <p>Bonds are debt securities issued by corporations or governments. When you buy a bond, you are lending money to the issuer in exchange for periodic interest payments and the return of the bond’s face value at maturity.<br>
+                   Bonds are generally considered lower risk compared to stocks, making them suitable for conservative investors.<br>
+                   There are different types of bonds, including government bonds, corporate bonds, and municipal bonds, each with varying risk levels and returns.</p>
+            </div>
+        </li>
 
-    <footer>
-        <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
-    </footer>
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('desc3')">Real Estate</div>
+            <div id="desc3" class="description">
+                <p>Real estate involves investing in property, either residential or commercial. This can generate rental income and potential appreciation in property value.<br>
+                   Real estate can be a good way to diversify your portfolio and build wealth.<br>
+                   Consider factors such as location, property condition, and market trends when investing in real estate.</p>
+            </div>
+        </li>
 
-    <script>
-        function navigate(direction) {
-            const lessonNumber = parseInt(window.location.pathname.match(/lesson(\d+)/)[1]);
-            const nextLessonNumber = lessonNumber + direction;
-            if (nextLessonNumber >= 1 && nextLessonNumber <= 4) {
-                window.location.href = `lesson${nextLessonNumber}`;
-            } else if (nextLessonNumber > 4) {
-                window.location.href = "lesson_home";
-            }
-        }
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('desc4')">Mutual Funds</div>
+            <div id="desc4" class="description">
+                <p>Mutual funds pool money from many investors to invest in a diversified portfolio of stocks, bonds, or other assets.<br>
+                   They offer diversification and professional management, which can be advantageous for individual investors.<br>
+                   Choose mutual funds based on their investment strategy, fees, and performance history.</p>
+            </div>
+        </li>
+
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('desc5')">Exchange-Traded Funds (ETFs)</div>
+            <div id="desc5" class="description">
+                <p>ETFs are similar to mutual funds but trade like stocks on an exchange. They offer diversification and can be a cost-effective way to invest in various asset classes.<br>
+                   ETFs can track indices, sectors, or commodities, providing flexibility and options for different investment goals.<br>
+                   Be aware of trading costs and the specific focus of each ETF.</p>
+            </div>
+        </li>
+
+        
+    </ul>
+
+    <figure>
+        <img src="/static/investment_Future.png" alt="Investing for the Future" style="width: 50%; height: auto;">
+        <figcaption>An overview of different investment options.</figcaption>
+    </figure>
     
-        function exit() {
-            if (confirm("Are you sure you want to exit?")) {
-                window.location.href = "lesson_home";
-            }
+    <!-- Navigation controls -->
+    <div class="navigation">
+        <button onclick="navigate(-1)">Back</button>
+        <button onclick="navigate(1)">Next</button>
+        <button onclick="exit()">Exit</button>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
+</footer>
+
+<script>
+    function toggleDescription(id) {
+        var desc = document.getElementById(id);
+        desc.style.display = (desc.style.display === "none" || desc.style.display === "") ? "block" : "none";
+    }
+
+    function navigate(direction) {
+        const lessonNumber = parseInt(window.location.pathname.match(/lesson(\d+)/)[1]);
+        const nextLessonNumber = lessonNumber + direction;
+        if (nextLessonNumber >= 1 && nextLessonNumber <= 4) {
+            window.location.href = `lesson${nextLessonNumber}`;
+        } else if (nextLessonNumber > 4) {
+            window.location.href = "lesson_home";
         }
-    </script>
+    }
+
+    function exit() {
+        if (confirm("Are you sure you want to exit?")) {
+            window.location.href = "lesson_home";
+        }
+    }
+</script>
 
 {% endblock %}

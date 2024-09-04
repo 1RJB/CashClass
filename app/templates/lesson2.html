@@ -3,6 +3,7 @@
 {% block body %}
 <header>
     <h1>Lesson 2: Saving Strategies</h1>
+    <link rel="stylesheet" href="../static/styles/lesson.css">
 </header>
 
 <main>
@@ -14,41 +15,72 @@
 
     <h3>Examples of Saving Strategies:</h3>
     <ul>
-        <li class="toggle-button" onclick="toggleDescription('desc1')" style="font-weight: bold; font-size: larger;">Pay Yourself First</li>
-        <p id="desc1" class="description" style="display: none;">
-            Automatically save a portion of your income before spending it on other expenses.<br>
-            This strategy prioritizes your savings and ensures you build a financial cushion or achieve your savings goals.<br>
-            Set up automatic transfers to a savings account or investment fund to make this process easy and consistent.
-        </p>
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('desc1')">Pay Yourself First</div>
+            <div id="desc1" class="description">
+                <p>Automatically save a portion of your income before spending it on other expenses.<br>
+                    This strategy prioritizes your savings and ensures you build a financial cushion or achieve your savings goals.<br>
+                    Set up automatic transfers to a savings account or investment fund to make this process easy and consistent.
+                </p>
+            </div>
+        </li>
 
-        <li class="toggle-button" onclick="toggleDescription('desc2')" style="font-weight: bold; font-size: larger;">Budgeting</li>
-        <p id="desc2" class="description" style="display: none;">
-            Track your income and expenses to understand where your money goes and identify areas where you can cut back.<br>
-            Create a budget by categorizing your expenses into needs and wants, and set limits for each category.<br>
-            Regularly review and adjust your budget to stay on track and maximize your savings potential.
-        </p>
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('desc2')">Budgeting</div>
+            <div id="desc2" class="description">
+                <p>Track your income and expenses to understand where your money goes and identify areas where you can cut back.<br>
+                    Create a budget by categorizing your expenses into needs and wants, and set limits for each category.<br>
+                    Regularly review and adjust your budget to stay on track and maximize your savings potential.
+                </p>
+            </div>
+        </li>
 
-        <li class="toggle-button" onclick="toggleDescription('desc3')" style="font-weight: bold; font-size: larger;">Emergency Fund</li>
-        <p id="desc3" class="description" style="display: none;">
-            Save 3-6 months' worth of living expenses to cover unexpected costs such as medical emergencies, car repairs, or job loss.<br>
-            This fund acts as a financial safety net, providing peace of mind and helping you avoid going into debt when unforeseen expenses arise.<br>
-            Keep this fund in a separate, easily accessible savings account.
-        </p>
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('desc3')">Emergency Fund</div>
+            <div id="desc3" class="description">
+                <p>Save 3-6 months' worth of living expenses to cover unexpected costs such as medical emergencies, car repairs, or job loss.<br>
+                    This fund acts as a financial safety net, providing peace of mind and helping you avoid going into debt when unforeseen expenses arise.<br>
+                    Keep this fund in a separate, easily accessible savings account.
+                </p>
+            </div>
+        </li>
+
+        <!-- Additional examples -->
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('desc4')">Reduce Unnecessary Subscriptions</div>
+            <div id="desc4" class="description">
+                <p>Review your monthly subscriptions and cancel those you don't use frequently.<br>
+                    This could include streaming services, magazine subscriptions, or gym memberships.<br>
+                    Redirect the savings into a dedicated savings account or investment fund.
+                </p>
+            </div>
+        </li>
+
+        <li>
+            <div class="toggle-button" onclick="toggleDescription('desc5')">Shop with a List</div>
+            <div id="desc5" class="description">
+                <p>Create a shopping list before going to the store and stick to it.<br>
+                    This helps avoid impulse purchases and ensures that you only buy what you need.<br>
+                    Plan your meals for the week to reduce food waste and save on groceries.
+                </p>
+            </div>
+        </li>
+
+        
     </ul>
 
     <figure>
         <img src="/static/Financial_Plan.png" alt="Saving Strategies" style="width: 50%; height: auto;">
         <figcaption>A visual representation of saving strategies.</figcaption>
     </figure>
+    
     <!-- Navigation controls -->
-<div class="navigation">
-    <button onclick="navigate(-1)">Back</button>
-    <button onclick="navigate(1)">Next</button>
-    <button onclick="exit()">Exit</button>
-</div>
+    <div class="navigation">
+        <button onclick="navigate(-1)">Back</button>
+        <button onclick="navigate(1)">Next</button>
+        <button onclick="exit()">Exit</button>
+    </div>
 </main>
-
-
 
 <footer>
     <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
@@ -76,6 +108,5 @@
         }
     }
 </script>
-
 
 {% endblock %}

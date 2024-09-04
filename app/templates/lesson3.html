@@ -3,9 +3,11 @@
 {% block body %}
 <header>
     <h1>Lesson 3: Understanding Debit and Credit</h1>
+    <link rel="stylesheet" href="../static/styles/lesson.css">
 </header>
 
 <main>
+    <h2>Overall brief on Debit and Credit</h2>
     <p>In accounting, a debit is an entry that increases asset or expense accounts and decreases liability, revenue, and equity accounts, while a credit is an entry that decreases asset or expense accounts and increases liability, revenue, and equity accounts.<br>
         Together, debits and credits are used to ensure that the accounting equation remains balanced and accurately reflects financial transactions.
     </p>
@@ -50,14 +52,15 @@
     </tbody>
 </table>
 
+<br>
 
 <h2>What is Debit?</h2>
 <p>A debit increases the value of asset and expense accounts or decreases the value of liability, revenue, and equity accounts.</p>
 
 <ul>
     <li>
-        <div class="toggle-button" onclick="toggleDescription('debit')" style="font-weight: bold; font-size: larger;">More on Debit</div>
-        <div id="debit" class="description" style="display: none;" >
+        <div class="toggle-button" onclick="toggleDescription('debit')">More on Debit</div>
+        <div id="debit" class="description"  >
             <ul>
                 <li><strong>Assets:</strong> Debits increase the value of asset accounts.</li>
                 <li><strong>Expenses:</strong> Debits increase expense accounts.</li>
@@ -74,8 +77,8 @@
 
 <ul>
     <li>
-        <div class="toggle-button" onclick="toggleDescription('credit')" style="font-weight: bold; font-size: larger;">More on Credit</div>
-        <div id="credit" class="description" style="display: none;">
+        <div class="toggle-button" onclick="toggleDescription('credit')" >More on Credit</div>
+        <div id="credit" class="description">
             <ul>
                 <li><strong>Assets:</strong> Credits decrease the value of asset accounts.</li>
                 <li><strong>Expenses:</strong> Credits decrease expense accounts.</li>
@@ -124,25 +127,5 @@
         }
     }
 </script>
-<style>
-    table {
-  border-collapse: collapse;
-  width: 90%; /* Reducing the table width slightly from 100% */
-  margin: auto; /* Center the table within its container */
-}
 
-table, td, th {  
-  border: 1px solid #ddd;
-  text-align: center; /* Center the text in the table */
-}
-
-th, td {
-  padding: 10px; /* Reduced padding to slightly decrease the table size */
-}
-
-.Table{
-    text-align: center;
-}
-
-</style>
 {% endblock %}
