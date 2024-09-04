@@ -10,7 +10,7 @@
             
             <!-- Image Preview Section -->
             <div class="profile-details">
-                <img id="image_preview" src="{{ url_for('static', filename='profile_pics/' + (form.image_file.data.filename if form.image_file.data else current_user.image_file if current_user.image_file else 'default.png')) }}" alt="Profile Picture" class="profile-img rounded-circle" style="width: 20rem; margin: 2rem 2rem 2rem;"/>
+                <img id="image_preview" src="{{ url_for('static', filename='profile_pics/' + (form.image_file.data.filename if form.image_file.data else current_user.image_file if current_user.image_file else 'default.png')) }}" alt="Profile Picture" class="profile-img rounded-circle" style="width: 20rem; height: 20rem; margin: 2rem 2rem 2rem;"/>
                 <div class="form-group">
                     <label for="image_file">Profile Picture</label>
                     {{ form.image_file() }}
