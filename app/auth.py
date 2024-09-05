@@ -109,18 +109,16 @@ def login():
 
     form = Login(request.form)
     if form.validate_on_submit():
-        # Get the user input (username or email)
-        user_input = form.username_or_email.data
-        
+        # Check if the input is an email or username
+        user_input = form.username_or_email.data.lower()
         user = None
 
-        # Check if the input contains '@', implying it's an email
+        # Try to get the user by email
         if '@' in user_input:
-            # Normalize email by converting it to lowercase
-            user = Users.query.filter_by(email=user_input.lower()).first()
+            user = Users.query.filter_by(email=user_input).first()
         else:
-            # Username case-insensitive search
-            user = Users.query.filter(Users.username.ilike(user_input)).first()
+            # Otherwise, try to get the user by username
+            user = Users.query.filter_by(username=user_input).first()
 
         if user and check_password_hash(user.password, form.password.data):
             flash('Logged in successfully', category='success')
@@ -132,7 +130,6 @@ def login():
             flash('No account with that username or email address.', category='error')
 
     return render_template('login.html', form=form)
-
 
 @auth.route('/profile', methods=['GET', 'POST'])
 @login_required
@@ -263,22 +260,37 @@ def parse_quiz_data(quiz_text):
         print(f"Error parsing quiz data: {e}")
         return []
 
+from flask import session
+
 @auth.route('/quiz', methods=['GET', 'POST'])
 @login_required
 def quiz():
-    quiz = get_quiz()  # Retrieve or generate the quiz
-    
     if request.method == 'POST':
+        # Handle form submission
         user_answers = request.form.to_dict()
         correct_count = 0
 
+        quiz = session.get('quiz', [])  # Retrieve the quiz from the session
+        
         for question in quiz:
             question_id = question['id']
-            selected_answer = user_answers.get(str(question_id))
-            question['selected'] = selected_answer
-            question['is_correct'] = (selected_answer == question['correct_answer'])
-            if question['is_correct']:
-                correct_count += 1
+            selected_index = user_answers.get(str(question_id))
+            if selected_index is not None:
+                selected_index = int(selected_index)
+                selected_answer = question['options'][selected_index]
+                correct_answer_letter = question['correct_answer']
+                
+                # Convert correct_answer_letter to the correct option text
+                correct_answer_index = ord(correct_answer_letter) - ord('A')
+                correct_answer_text = question['options'][correct_answer_index]
+
+                question['selected'] = selected_index
+                question['is_correct'] = (selected_answer == correct_answer_text)
+                
+                print(f"Question ID: {question['id']}, Selected Answer: {selected_answer}, Correct Answer: {correct_answer_text}")
+
+                if question['is_correct']:
+                    correct_count += 1
 
         flash(f"You got {correct_count} out of {len(quiz)} correct!", "success")
 
@@ -290,7 +302,16 @@ def quiz():
         )
         db.session.add(quiz_submission)
         db.session.commit()
+        
+        # Clear quiz from session
+        session.pop('quiz', None)
 
+        # Redirect to the quiz submissions page
+        return redirect(url_for('auth.quiz_submission', submission_id=quiz_submission.id))
+
+    # Generate and store quiz in session
+    quiz = get_quiz()
+    session['quiz'] = quiz
     return render_template('quiz.html', quiz=quiz)
 
 @auth.route('/quiz_submissions')
@@ -325,8 +346,4 @@ def lesson3():
 @auth.route('/lesson4')
 def lesson4():
     return render_template('lesson4.html', lesson4=lesson4)
-def quiz():
-    return render_template('quiz.html', quiz=quiz)
-def coin():
-    return render_template('quote.html')
 
