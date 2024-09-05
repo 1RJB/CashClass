@@ -192,8 +192,78 @@
 </div>
 <script>
     let currentCardIndex = 0;
-    let flashcardsjs = {{ flashcards|tojson|safe }};
-    
+
+    // Financial literacy flashcards data
+    let predefinedFlashcards = [
+        {
+            "question": "What is a budget?",
+            "answer": "A budget is a plan that helps you manage your income and expenses, ensuring that you don't spend more than you earn."
+        },
+        {
+            "question": "Why is saving important?",
+            "answer": "Saving helps you prepare for unexpected expenses, achieve financial goals, and build wealth over time."
+        },
+        {
+            "question": "What is an emergency fund?",
+            "answer": "An emergency fund is money set aside to cover unforeseen expenses like medical bills or car repairs."
+        },
+        {
+            "question": "What is interest in terms of saving?",
+            "answer": "Interest is the money you earn from a bank or financial institution for keeping your savings in an account."
+        },
+        {
+            "question": "What is credit?",
+            "answer": "Credit is borrowed money that you agree to pay back later, often with added interest."
+        },
+        {
+            "question": "What is a credit score?",
+            "answer": "A credit score is a number that represents your creditworthiness, based on how reliably you repay borrowed money."
+        },
+        {
+            "question": "What are wants versus needs?",
+            "answer": "Needs are essential things like food and housing, while wants are non-essential items like video games or dining out."
+        },
+        {
+            "question": "What is compound interest?",
+            "answer": "Compound interest is the interest calculated on both the initial principal and the accumulated interest from previous periods."
+        },
+        {
+            "question": "Why should you avoid debt?",
+            "answer": "Debt can lead to financial stress if not managed properly, especially if interest accumulates, making it harder to pay off."
+        },
+        {
+            "question": "What is the purpose of insurance?",
+            "answer": "Insurance helps protect you from financial loss due to events like accidents, illness, or theft."
+        },
+        {
+            "question": "What does it mean to invest?",
+            "answer": "Investing is putting your money into stocks, bonds, or other financial products with the goal of growing your wealth over time."
+        },
+        {
+            "question": "What is a bank account?",
+            "answer": "A bank account is a place where you can store your money safely, and it can be used for savings or day-to-day transactions."
+        },
+        {
+            "question": "What is a debit card?",
+            "answer": "A debit card is linked directly to your bank account and allows you to make purchases by using the money you already have."
+        },
+        {
+            "question": "Why is financial planning important?",
+            "answer": "Financial planning helps you set goals, manage your income, and make informed decisions about saving, spending, and investing."
+        },
+        {
+            "question": "What is the difference between a job and a career?",
+            "answer": "A job is work done to earn money in the short term, while a career involves long-term growth and progression in a chosen field."
+        }
+    ];
+
+
+    // Load the user-created flashcards dynamically from the backend
+    let userFlashcards = {{ flashcards|tojson|safe }};
+
+    // Combine both user-created flashcards and predefined flashcards
+    let flashcardsjs = userFlashcards.concat(predefinedFlashcards);
+
     document.addEventListener('DOMContentLoaded', () => {
         console.log(flashcardsjs);
         if (flashcardsjs.length > 0) {
