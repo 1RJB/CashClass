@@ -326,4 +326,6 @@ def lesson4():
     return render_template('lesson4.html', lesson4=lesson4)
 def quiz():
     return render_template('quiz.html', quiz=quiz)
+def coin():
+    return render_template('quote.html')
 
