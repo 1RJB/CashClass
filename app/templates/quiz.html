@@ -16,15 +16,13 @@
                     {% for option in question['options'] %}
                     <li>
                         <label>
-                            <input type="radio" name="{{ question['id'] }}" value="{{ option }}" {% if
-                                question['selected']==option %} checked {% endif %}>
+                            <input type="radio" name="{{ question['id'] }}" value="{{ loop.index0 }}" {% if question['selected'] == loop.index0 %} checked {% endif %}>
                             {{ option }}
-                            {% if question['selected'] == option %}
+                            {% if question['selected'] == loop.index0 %}
                             {% if question['is_correct'] %}
                             <span style="color: green;">(Correct)</span>
                             {% else %}
-                            <span style="color: red;">(Incorrect, correct answer: {{ question['correct_answer']
-                                }})</span>
+                            <span style="color: red;">(Incorrect, correct answer: {{ question['correct_answer'] }})</span>
                             {% endif %}
                             {% endif %}
                         </label>
@@ -35,11 +33,8 @@
             {% endfor %}
         </ol>
         <button class="btn-signup" style="background-color: green; width: 60%; margin: 20px auto; display: block;" type="submit">Submit Quiz</button>
-
     </form>
 </div>
 <button class="btn-signup" style="background-color: goldenrod; width: 384px; margin: 10px auto; display: block;" onclick="window.location.reload();">Refresh Quiz</button>
-
-
 <a href="{{ url_for('auth.quiz_submissions') }}" class="btn-signup" style="background-color: black; width: 384px; text-decoration: none; text-align: center; margin: 10px auto; display: block;">View Your Quiz Submissions</a>
 {% endblock body %}
