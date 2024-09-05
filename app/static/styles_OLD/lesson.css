@@ -121,3 +121,11 @@ figcaption {
 }
 
 h2{text-decoration: underline;}
+
+.Ending {
+    text-align: center;
+    font-size: 18px; /* Adjust font size if needed */
+    margin-top: 20px; /* Add some spacing from the top if needed */
+}
+
+
