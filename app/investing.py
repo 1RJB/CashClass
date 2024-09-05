@@ -68,6 +68,7 @@ def portfolio():
 
     return render_template("portfolio.html", stocks=stocks, user_info=user_info)
 
+
 @investing.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
