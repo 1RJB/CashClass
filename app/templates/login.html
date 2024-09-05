@@ -10,11 +10,11 @@
             </div>
             <form method='POST' action=''>
                 {{ form.csrf_token }}
-                <div class="form-floating mb-3">
+                <div>   <!--  class="form-floating mb-3" -->
                     <label style="padding-left:30px;" for="floatingInput">Username or Email</label>
                     {{ form.username_or_email }}
                 </div>
-                <div class="form-floating">
+                <div><!-- class="form-floating" -->
                     <label style="padding-left:30px;" for="floatingPassword">Password</label>
                     {{ form.password }}
                 </div>

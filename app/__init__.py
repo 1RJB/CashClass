@@ -5,12 +5,14 @@ from flask_wtf.csrf import CSRFProtect
 from os import path
 from flask_sqlalchemy import SQLAlchemy
 from .utils import usd
+import os
 db = SQLAlchemy()
 csrf = CSRFProtect()
 
 
 def create_app(config_class=Config):
-    app = Flask(__name__)
+    app = Flask(__name__,static_folder=os.path.join(os.pardir, 'static'),  # Point to the static folder in the root
+                template_folder='templates')
     app.config.from_object(config_class)
     # Custom filter
     app.jinja_env.filters["usd"] = usd
