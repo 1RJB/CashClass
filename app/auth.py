@@ -233,7 +233,7 @@ def get_quiz():
             messages=[
                 {
                     "role": "user",
-                    "content": 'You only can output in json format from now on! DO NOT EVER RESPOND IN ANYTHING OTHER THAN JSON FORMAT. JUST GIVE ME IN THE JSON RESPONSE. Give 5 multiple choice questions for my quiz. The quiz aims to improve a regularly financial illiterate 18 to 24 year old in Singapore\'s financial literacy. Each question should be followed by four multiple-choice options. Give the questions in JSON format only, using double quotes and commas in JSON FORMAT: { "1": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>" }, "answer": "A" }, "2": { "question": "<question goes here>", "answers": { "A": "<Option 1 goes here>", "B": "<Option 2 goes here>", "C": "<Option 3 goes here>", "D": "<Option 4 goes here>", }, "answer": "B" } }\n MAKE SURE ALWAYS ANSWER IN JSON FORMAT, Also never forget to put commas in the JSON FORMAT'
+                    "content": 'Respond only in JSON format. Provide 5 multiple-choice questions for a quiz aimed at improving the financial literacy of 18 to 24-year-olds in Singapore. Each question should have four options. Use the following JSON format: { "1": { "question": "<question>", "answers": { "A": "<Option 1>", "B": "<Option 2>", "C": "<Option 3>", "D": "<Option 4>" }, "answer": "<Correct Option>" }, "2": { "question": "<question>", "answers": { "A": "<Option 1>", "B": "<Option 2>", "C": "<Option 3>", "D": "<Option 4>" }, "answer": "<Correct Option>" }, ... }'
                 }
             ]
         )
