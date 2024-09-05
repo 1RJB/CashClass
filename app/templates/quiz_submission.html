@@ -11,10 +11,9 @@
             {% for option in question['options'] %}
             <li>
                 <label>
-                    <input type="radio" name="{{ question['id'] }}" value="{{ option }}" {% if
-                        question['selected']==option %}checked{% endif %} disabled>
+                    <input type="radio" name="{{ question['id'] }}" value="{{ option }}" {% if question['selected'] == option %} checked {% endif %} disabled>
                     {{ option }}
-                    {% if question['selected'] == option %}
+                    {% if option == question['selected'] %}
                     {% if question['selected'] == question['correct_answer'] %}
                     <span style="color: green;">(Correct)</span>
                     {% else %}

@@ -1,15 +1,22 @@
 {% extends "base.html" %}
 {% block title %}Quiz Submissions{% endblock %}
 {% block body %}
-<h1>Your Quiz Submissions</h1>
-<ul>
-    {% for submission in submissions %}
-    <li>
-        <a href="{{ url_for('auth.quiz_submission', submission_id=submission.id) }}">
-            Submitted on {{ submission.submitted_at }} - Score: {{ submission.score }}/{{
-            json.loads(submission.quiz_data)|length }}
-        </a>
-    </li>
-    {% endfor %}
-</ul>
+<link rel="stylesheet" href="{{ url_for('static', filename='styles_OLD/form.css') }}">
+<h1  style="text-align: center; margin-top: 60px;">Your Quiz Submissions</h1>
+<!-- Display Quiz Submissions -->
+<div class="sign-panels" style="width: 50rem;">
+    {% if submissions|length == 0 %}
+    <p>No quiz submissions yet.</p>
+    {% endif %}
+    <ol class="submission-list">
+        {% for submission in submissions %}
+        <li>
+            <a href="{{ url_for('auth.quiz_submission', submission_id=submission.id) }}">
+                Submitted on {{ submission.submitted_at.strftime('%d/%m/%Y %H:%M:%S') }} - Score: {{
+                submission.score }}/{{ json.loads(submission.quiz_data)|length }}
+            </a>
+        </li>
+        {% endfor %}
+    </ol>
+</div>
 {% endblock %}
