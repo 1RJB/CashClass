@@ -115,6 +115,7 @@
     color: #7c7c7c;
     font-weight: 500;
     transition: border 0.3s ease, background-color 0.3s ease; /* For input fields */
+    transition: all .3s ease;
 }
 
 .sign-panels input:hover,
@@ -199,12 +200,14 @@
     border: none;
     box-shadow: none;
     cursor: pointer;
+    transition: all .3s ease-in-out;
 }
 
 .btn-signin:hover,
 .btn-signin:focus {
     color: white;
     box-shadow: 0 0 0 2px white, 0 0 0 3px rebeccapurple;
+    transform: scale(1.05); /* Slight enlargement on hover */
 }
 
 .btn-signup {
@@ -222,12 +225,14 @@
     border: none;
     box-shadow: none;
     cursor: pointer;
+    transition: all .3s ease-in-out;
 }
 
 .btn-signup:hover,
 .btn-signup:focus {
     color: white;
     box-shadow: 0 0 0 2px white, 0 0 0 3px rebeccapurple;
+    transform: scale(1.05); /* Slight enlargement on hover */
 }
 
 .btn-reset,

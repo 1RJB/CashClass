@@ -83,6 +83,9 @@
     </div>
     <div class="text-center mt-5">
         <a href="add_flashcard"><button class="btn btn-success" data-toggle="modal" data-target="#addFlashcardModal">Add New Flashcard</button></a>
+        <a href="javascript:void(0);" onclick="deleteCard()">
+            <button class="btn btn-danger">Delete Flashcard</button>
+        </a>
     </div>
 </div>
 <script>
@@ -138,5 +141,26 @@
         progressText.textContent = `Card ${current} of ${total}`;
         progressBar.style.width = `${progressPercent}%`;
     }
+
+    function deleteCard() {
+        // Confirm before deleting
+        if (confirm('Are you sure you want to delete this flashcard?')) {
+            // Remove the current card from the flashcards array
+            flashcardsjs.splice(currentCardIndex, 1);
+            
+            // Check if there are any flashcards left
+            if (flashcardsjs.length === 0) {
+                document.getElementById('flashcard-container').innerHTML = '<p>No flashcards available. Please add new flashcards.</p>';
+            } else {
+                // If the current card index exceeds the new length, adjust it
+                if (currentCardIndex >= flashcardsjs.length) {
+                    currentCardIndex = flashcardsjs.length - 1;
+                }
+                // Update the card and progress bar after deletion
+                updateCard();
+                updateProgressBar();
+            }
+        }
+    }    
 </script>
 {% endblock %}
