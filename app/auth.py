@@ -142,7 +142,7 @@ def login():
         if user and check_password_hash(user.password, form.password.data):
             flash('Logged in successfully', category='success')
             login_user(user, remember=True)
-            return redirect(url_for('views.show_expenses'))
+            return redirect(url_for('auth.home'))
         elif user:
             flash('Incorrect password, please try again.', category='error')
         else:
