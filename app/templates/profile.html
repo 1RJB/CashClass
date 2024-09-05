@@ -2,43 +2,88 @@
 {% block body %}
 <link rel="stylesheet" href="{{ url_for('static', filename='styles/form.css') }}">
 
-    <h1 class="signin-title" style="text-align: center; margin-top: 30px;">Your Profile</h1>
-    <div class="sign-panels" style="width: 50rem;">
-        <!-- Display User Details -->
-        <div class="profile-details">
-            <div class="profile-header">
-                <img src="{{ url_for('static', filename='profile_pics/' + (current_user.image_file if current_user.image_file else 'default.png')) }}"
-                    class="profile-img rounded-circle" alt="User Icon"
-                    style="width: 20rem; height: 20rem; object-fit: cover; margin-right: 40px;" />
-                <div class="profile-info">
-                    <h2>{{ current_user.name }}</h2>
-                    <p><strong>Username:</strong> {{ current_user.username }}</p>
-                    <p><strong>Name:</strong> {{current_user.name}}</p>
-                    <p><strong>Email:</strong> {{ current_user.email }}</p>
-                    <p><strong>Cash:</strong> {{ current_user.cash }}</p>
-                    <p><strong>Member Since:</strong> {{ current_user.created_at.strftime('%d/%m/%Y') }}</p>
-                </div>
+<h1 class="signin-title" style="text-align: center; margin-top: 30px;">Your Profile</h1>
+<div class="sign-panels" style="width: 50rem;">
+    <!-- Display User Details -->
+    <div class="profile-details">
+        <div class="profile-header">
+            <img src="{{ url_for('static', filename='profile_pics/' + (current_user.image_file if current_user.image_file else 'default.png')) }}"
+                class="profile-img rounded-circle" alt="User Icon"
+                style="width: 20rem; height: 20rem; object-fit: cover; margin-right: 40px;" />
+            <div class="profile-info">
+                <h2>{{ current_user.name }}</h2>
+                <p><strong>Username:</strong> {{ current_user.username }}</p>
+                <p><strong>Name:</strong> {{current_user.name}}</p>
+                <p><strong>Email:</strong> {{ current_user.email }}</p>
+                <p><strong>Cash:</strong> {{ current_user.cash }}</p>
+                <p><strong>Member Since:</strong> {{ current_user.created_at.strftime('%d/%m/%Y') }}</p>
             </div>
-            <a href="{{ url_for('auth.logout') }}" class="btn-signup" style="background-color: black; width: 90%; text-decoration: none;">Logout</a>
-            <a href="{{ url_for('auth.edit_profile') }}" class="btn-signup" style="width: 90%; text-decoration: none">Edit Profile</a>
+        </div>
+        <a href="{{ url_for('auth.logout') }}" class="btn-signup"
+            style="background-color: black; width: 90%; text-decoration: none;">Logout</a>
+        <a href="{{ url_for('auth.edit_profile') }}" class="btn-signup" style="width: 90%; text-decoration: none">Edit
+            Profile</a>
+    </div>
+</div>
+<h2 class="signin-title" style="text-align: center; margin-top: 60px;">Quiz Submissions</h2>
+<!-- Display Quiz Submissions -->
+<div class="sign-panels" style="width: 50rem;">
+    {% if quiz_submissions|length == 0 %}
+    <p>No quiz submissions yet.</p>
+    {% endif %}
+    <ol class="submission-list">
+        {% for submission in quiz_submissions %}
+        <li>
+            <a href="{{ url_for('auth.quiz_submission', submission_id=submission.id) }}">
+                Submitted on {{ submission.submitted_at.strftime('%d/%m/%Y %H:%M:%S') }} - Score: {{
+                submission.score }}/{{ json.loads(submission.quiz_data)|length }}
+            </a>
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+
+
+
+<div class="sign-panels" style="width: 50rem; margin-top: 100px;">
+    <h2 class="signin-title" style="text-align: center; margin-bottom: 30px;">Account Deletion</h2>
+    <!-- Delete Account With Confirmation-->
+    <form id="deleteForm" action="{{ url_for('auth.delete_profile') }}" method="post">
+        <input type="button" value="Delete Account" class="btn-signup" style="background-color: red; width: 90%; color: aliceblue;"
+            onclick="showModal()">
+    </form>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <p>Are you sure you want to delete your account?</p>
+        <div class="button-container">
+            <button style="background-color: red; width: 10rem;" onclick="confirmDelete()">Yes</button>
+            <button style="background-color: grey; width: 10rem;" onclick="closeModal()">No</button>
         </div>
     </div>
-    <h2 class="signin-title" style="text-align: center; margin-top: 60px;">Quiz Submissions</h2>
-    <!-- Display Quiz Submissions -->
-    <div class="sign-panels" style="width: 50rem;">
-        {% if quiz_submissions|length == 0 %}
-        <p>No quiz submissions yet.</p>
-        {% endif %}
-        <ol class="submission-list">
-            {% for submission in quiz_submissions %}
-            <li>
-                <a href="{{ url_for('auth.quiz_submission', submission_id=submission.id) }}">
-                    Submitted on {{ submission.submitted_at.strftime('%d/%m/%Y %H:%M:%S') }} - Score: {{
-                    submission.score }}/{{ json.loads(submission.quiz_data)|length }}
-                </a>
-            </li>
-            {% endfor %}
-        </ol>
-    </div>
+</div>
+
+<script>
+    function showModal() {
+        document.getElementById("myModal").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    function confirmDelete() {
+        document.getElementById("deleteForm").submit();
+    }
+
+    window.onclick = function (event) {
+        if (event.target == document.getElementById("myModal")) {
+            closeModal();
+        }
+    }
+</script>
 
 {% endblock %}
