@@ -182,6 +182,15 @@ def edit_profile():
 
     return render_template('edit_profile.html', form=form)
 
+# Delete user
+@auth.route('/profile/delete', methods=['POST'])
+@login_required
+def delete_profile():
+    db.session.delete(current_user)
+    db.session.commit()
+    flash('Account deleted successfully!', 'success')
+    return redirect(url_for('auth.signup'))
+
 @auth.route('/logout')
 @login_required
 def logout():
