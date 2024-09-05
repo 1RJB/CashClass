@@ -20,7 +20,7 @@ docs/_build/
 .vscode
 
 # Profile Pictures
-profile_pics/
+profile_pics/*
 !default.png
 
 # Coverage reports
