@@ -17,6 +17,9 @@ auth = Blueprint('auth', __name__)
 @auth.route('/flashcards')
 @login_required
 def flashcards():
+    # Ensure that the session has the latest data by clearing any stale data
+    db.session.expire_all()  # This ensures the session gets fresh data
+
     # Query the database for flashcards belonging to the current user
     user_flashcards = Flashcard.query.filter_by(user_id=current_user.email).all()
     
@@ -26,7 +29,6 @@ def flashcards():
     # Render the template with the flashcards
     return render_template('flashcards.html', flashcards=flashcards_data)
 
-
 @auth.route('/add_flashcard', methods=['GET', 'POST'])
 @login_required
 def add_flashcard():
@@ -34,8 +36,9 @@ def add_flashcard():
         try:
             question = request.form.get('question')
             answer = request.form.get('answer')
-            category = request.form.get('category') if not None else "None"
+            category = request.form.get('category') if request.form.get('category') else "None"
             
+            # Create a new flashcard
             new_flashcard = Flashcard(
                 question=question,
                 answer=answer,
@@ -46,11 +49,27 @@ def add_flashcard():
             db.session.commit()
             flash('Flashcard added successfully!', 'success')
         except Exception as e:
-            print(e)
+            flash('Error adding flashcard: ' + str(e), 'danger')
+        
         return redirect(url_for('auth.flashcards'))
     
     return render_template('add_flashcard.html')
 
+@auth.route('/delete_flashcard/<int:card_id>', methods=['POST'])
+@login_required
+def delete_flashcard(card_id):
+    # Fetch the flashcard to be deleted by ID
+    flashcard_to_delete = Flashcard.query.get_or_404(card_id)
+    
+    # Ensure the flashcard belongs to the current user
+    if flashcard_to_delete.user_id == current_user.email:
+        db.session.delete(flashcard_to_delete)
+        db.session.commit()  # Ensure the deletion is committed to the database
+        flash('Flashcard deleted successfully!', 'success')
+    else:
+        flash('Unauthorized action', 'danger')
+    
+    return redirect(url_for('auth.flashcards'))
 
 @auth.route('/lesson_home')
 @login_required
