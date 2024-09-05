@@ -287,8 +287,6 @@ def quiz():
         )
         db.session.add(quiz_submission)
         db.session.commit()
-        
-        return redirect(url_for('auth.quiz_submissions'))
 
     return render_template('quiz.html', quiz=quiz)
 
