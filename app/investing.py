@@ -45,7 +45,7 @@ def portfolio():
         for transaction in transactions:
             if transaction.symbol == stock["symbol"]:
                 cost += transaction.shares * transaction.price # Sold shares will be negative
-
+        print(holding)
         stock["cost"] = cost / holding.shares
         stock["total_cost"] = cost
         stocks.append(stock) # Append stock dict to list of stocks
@@ -331,14 +331,16 @@ def reset():
 def quote():
     """Get stock quote via form submission"""
 
-    # User reached route via POST (as by submitting a form via POST)
+    # Get the stock symbol from the form input
     symbol = request.form.get("symbol")
 
-    # Validate length and alphabetical nature of symbol string
-    if not (len(symbol) <= 5 and symbol.isalpha()):
-        return render_template("index.html", error="Invalid symbol"), 400
+    # Validate the symbol: check if it's alphabetic and 5 or fewer characters
+    if not symbol or len(symbol) > 5 or not symbol.isalpha():
+        # If the symbol is invalid, return a 404 page
+        return render_template("404.html", error="Invalid stock symbol."), 404
 
-    return redirect("/quote/" + symbol)
+    # If valid, redirect to the quote page for the stock symbol
+    return redirect(f"/quote/{symbol.upper()}")
 
 
 @investing.route("/quote/<string:stock_symbol>")
@@ -356,7 +358,7 @@ def quote_symbol(stock_symbol):
     quote = lookup(symbol)
 
     if not quote:
-        return render_template("index.html", error="Invalid symbol"), 400
+        return render_template("404.html", error="Invalid symbol"), 400
 
     news_items = get_news(symbol)
     end = datetime.datetime.today()
