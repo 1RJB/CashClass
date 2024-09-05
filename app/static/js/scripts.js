@@ -78,4 +78,3 @@ function updateProgressBar() {
     progressText.textContent = `Card ${current} of ${total}`;
     progressBar.style.width = `${progressPercent}%`;
 }
-

@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Dashboard - SB Admin</title>
+        <title>{% block title %}Home page{% endblock %}</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/static/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -49,5 +49,24 @@
         <script src="/static/assets/demo/chart-bar-demo.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="/static/js/datatables-simple-demo.js"></script>
+
+        <script>
+            // Select all list items with class 'list-item'
+            const listItems = document.querySelectorAll('.list-item');
+    
+            // Loop through each item and add event listeners for hover
+            listItems.forEach(item => {
+                // On mouse over (hover), change the background color
+                item.addEventListener('mouseover', () => {
+                    item.style.backgroundColor = '#e0e0e0'; // Light grey on hover
+                });
+    
+                // On mouse out, reset the background color
+                item.addEventListener('mouseout', () => {
+                    item.style.backgroundColor = '#ffffff'; // Original background color
+                });
+            });
+        </script>
+    
     </body>
 </html>

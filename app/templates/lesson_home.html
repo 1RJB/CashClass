@@ -3,23 +3,40 @@
 
     <header>
         <h1>Financial Literacy Lessons</h1>
-        <link rel="stylesheet" href="../static/styles_OLD/lesson.css">
+        <link rel="stylesheet" href="../static/styles/lesson.css">
     </header>
     
     <main class="home">
-        <h2>Welcome to our Financial Literacy Lessons!</h2>
+        <h2 class="mt-4">Welcome to our Financial Literacy Lessons!</h2>
         <p>Choose a lesson below to improve your financial knowledge:</p>
         
-        <ul>
-            <li><a href="/lesson1">Lesson 1: Budgeting Basics</a></li>
-            <li><a href="/lesson2">Lesson 2: Saving Strategies</a></li>
-            <li><a href="/lesson3">Lesson 3: Understanding Debit and Credit</a></li>
-            <li><a href="/lesson4">Lesson 4: Investing for the Future</a></li>
+        <ul style="list-style-type: none; padding: 0; max-width: 400px; margin: 0 auto;">
+            <li style="margin: 10px 0;">
+                <a href="/lesson1" class="list-item" style="display: block; padding: 15px 20px; text-decoration: none; background-color: #ffffff; color: #333; font-size: 18px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: background-color 0.3s ease;">
+                    Lesson 1: Budgeting Basics
+                </a>
+            </li>
+            <li style="margin: 10px 0;">
+                <a href="/lesson2" class="list-item" style="display: block; padding: 15px 20px; text-decoration: none; background-color: #ffffff; color: #333; font-size: 18px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: background-color 0.3s ease;">
+                    Lesson 2: Saving Strategies
+                </a>
+            </li>
+            <li style="margin: 10px 0;">
+                <a href="/lesson3" class="list-item" style="display: block; padding: 15px 20px; text-decoration: none; background-color: #ffffff; color: #333; font-size: 18px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: background-color 0.3s ease;">
+                    Lesson 3: Understanding Debit and Credit
+                </a>
+            </li>
+            <li style="margin: 10px 0;">
+                <a href="/lesson4" class="list-item" style="display: block; padding: 15px 20px; text-decoration: none; background-color: #ffffff; color: #333; font-size: 18px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: background-color 0.3s ease;">
+                    Lesson 4: Investing for the Future
+                </a>
+            </li>
         </ul>
-        <img src="/static/Coverpage.avif" alt=""style="width: 50%; height: auto;">
+        <!-- <img src="/static/Coverpage.avif" alt=""style="width: 50%; height: auto;"> -->
     </main>
     <footer>
         <p>&copy; 2022 Financial Literacy Lessons. All rights reserved.</p>
     </footer>
-
+</body>
+</html>
 {% endblock body %}
