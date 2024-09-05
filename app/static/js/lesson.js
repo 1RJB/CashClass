@@ -32,7 +32,7 @@ function adjustButtons() {
 
     // Change "Next" button to "Finish" if on lesson 4
     if (lessonNumber === 4) {
-        nextButton.textContent = "Finish";
+        nextButton.style.display = "none";
     }
 }
 
