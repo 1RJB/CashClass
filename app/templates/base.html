@@ -67,6 +67,22 @@
                 });
             });
         </script>
+
+        <script>
+            function searchStock() {
+                // Get the value of the input
+                const stockSymbol = document.getElementById('searchInput').value.trim();
+                
+                // Check if input is not empty
+                if (stockSymbol) {
+                    // Redirect to the appropriate URL
+                    window.location.href = `/quote/${stockSymbol}`;
+                }
+
+                // Prevent form submission (since we are handling the redirection with JavaScript)
+                return false;
+            }
+        </script>
     
     </body>
 </html>
