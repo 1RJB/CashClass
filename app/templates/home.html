@@ -11,13 +11,13 @@
             {% endif %}
 
             <h1>Empower <span></span></h1>
-            <h1>Your Financial <span id="dynamic-word-container"><span id="dynamic-word">Future</span></span></h1>
+            <h1>Your Financial <span id="dynamic-word-container"></span><h1 id="dynamic-word" >Future</h1></h1>
             {% if name_user %}
-            <a href="/logout" type="button" class="cta">Log Out</a>
+            <a href="/logout" type="button" class="cta" style="text-decoration: none;">Log Out</a>
             {% else %}
-            <a href="/login" type="button" class="cta">Log in</a>
+            <a href="/login" type="button" class="cta" style="text-decoration: none;">Log in</a>
             <br>
-            <a href="/signup" type="button" class="cta">Create your Account</a>
+            <a href="/signup" type="button" class="cta" style="text-decoration: none;">Create your Account</a>
             {% endif %}
         </div>
     </div>

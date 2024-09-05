@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Dynamic word cycling
-    const words = ["Future", "Success", "Goals", "Dreams"];
+    const words = ["Success", "Goals", "Dreams", "Future"];
     let index = 0;
 
     function cycleWords() {
