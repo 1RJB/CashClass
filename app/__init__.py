@@ -11,7 +11,7 @@ csrf = CSRFProtect()
 
 
 def create_app(config_class=Config):
-    app = Flask(__name__,static_folder=os.path.join(os.pardir, 'static'),  # Point to the static folder in the root
+    app = Flask(__name__,static_folder=os.path.join(os.pardir, 'app/static'),  # Point to the static folder in the root
                 template_folder='templates')
     app.config.from_object(config_class)
     # Custom filter
