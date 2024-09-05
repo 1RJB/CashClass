@@ -109,16 +109,18 @@ def login():
 
     form = Login(request.form)
     if form.validate_on_submit():
-        # Check if the input is an email or username
-        user_input = form.username_or_email.data.lower()
+        # Get the user input (username or email)
+        user_input = form.username_or_email.data
+        
         user = None
 
-        # Try to get the user by email
+        # Check if the input contains '@', implying it's an email
         if '@' in user_input:
-            user = Users.query.filter_by(email=user_input).first()
+            # Normalize email by converting it to lowercase
+            user = Users.query.filter_by(email=user_input.lower()).first()
         else:
-            # Otherwise, try to get the user by username
-            user = Users.query.filter_by(username=user_input).first()
+            # Username case-insensitive search
+            user = Users.query.filter(Users.username.ilike(user_input)).first()
 
         if user and check_password_hash(user.password, form.password.data):
             flash('Logged in successfully', category='success')
@@ -130,6 +132,7 @@ def login():
             flash('No account with that username or email address.', category='error')
 
     return render_template('login.html', form=form)
+
 
 @auth.route('/profile', methods=['GET', 'POST'])
 @login_required

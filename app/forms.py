@@ -13,6 +13,7 @@ class Login(FlaskForm):
     submit = SubmitField('Log In')
 
 
+
 class SignUp(FlaskForm):
     username = StringField('Username*', validators=[DataRequired(), Length(min=2, max=20)])
     name = StringField('Name', validators=[Optional(), Length(min=2, max=20)]) 
