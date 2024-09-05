@@ -4,6 +4,7 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4">Add Flashcard</h2>
     <form method="POST" action="{{ url_for('auth.add_flashcard') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
         <div class="form-group">
             <label for="question">Question:</label>
             <input type="text" class="form-control" id="question" name="question" required>

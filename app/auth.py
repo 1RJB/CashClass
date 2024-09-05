@@ -31,19 +31,22 @@ def flashcards():
 @login_required
 def add_flashcard():
     if request.method == 'POST':
-        question = request.form.get('question')
-        answer = request.form.get('answer')
-        category = request.form.get('category')
-        
-        new_flashcard = Flashcard(
-            question=question,
-            answer=answer,
-            category=category,
-            user_id=current_user.email
-        )
-        db.session.add(new_flashcard)
-        db.session.commit()
-        flash('Flashcard added successfully!', 'success')
+        try:
+            question = request.form.get('question')
+            answer = request.form.get('answer')
+            category = request.form.get('category') if not None else "None"
+            
+            new_flashcard = Flashcard(
+                question=question,
+                answer=answer,
+                category=category,
+                user_id=current_user.email
+            )
+            db.session.add(new_flashcard)
+            db.session.commit()
+            flash('Flashcard added successfully!', 'success')
+        except Exception as e:
+            print(e)
         return redirect(url_for('auth.flashcards'))
     
     return render_template('add_flashcard.html')

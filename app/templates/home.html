@@ -5,13 +5,13 @@
     <div class="hero container">
         <div>
             {% if name_user %}
-            <h1>Hello {{ name_user }}, <span></span></h1>
+            <h1 class="mt-4">Hello {{ name_user }}, <span></span></h1>
             {% else %}
-            <h1>Hello!</h1>
+            <h1 class="mt-4">Hello!</h1>
             {% endif %}
 
-            <h1>Empower <span></span></h1>
-            <h1>Your Financial <span id="dynamic-word-container"></span><h1 id="dynamic-word" >Future</h1></h1>
+            <h1 class="mt-4">Empower <span></span></h1>
+            <h1 class="mt-4">Your Financial <span id="dynamic-word-container"></span><h1 id="dynamic-word" >Future</h1></h1>
             {% if name_user %}
             <a href="/logout" type="button" class="cta" style="text-decoration: none;">Log Out</a>
             {% else %}
