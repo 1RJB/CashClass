@@ -18,7 +18,7 @@
       <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><img src="{{ url_for('static', filename='profile_pics/' + (current_user.image_file if current_user.image_file else 'default.png')) }}" class="rounded-circle" alt="User Icon" style="width: 30px; margin-left: 3px;"></a> <!--<i class="fas fa-user fa-fw"></i> -->
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="{{ url_for('auth.edit_profile') }}">Settings</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('auth.profile') }}">Settings</a></li>
               <li><a class="dropdown-item" href="#!">Activity Log</a></li>
               <li><hr class="dropdown-divider" /></li>
               <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
